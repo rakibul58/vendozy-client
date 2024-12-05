@@ -8,11 +8,40 @@ import VForm from "@/components/form/VForm";
 import { Button } from "@/components/ui/button";
 import VInput from "@/components/form/VInput";
 import { AuthValidations } from "@/schemas/auth.validations";
+import { useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useUserLogin } from "@/hooks/auth.hook";
+import { useUser } from "@/context/user.provider";
 
 export default function Login() {
+  const { mutate: handleUserLogin, isPending, isSuccess } = useUserLogin();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const { user, setIsLoading: userLoading } = useUser();
+
+  const redirect = searchParams.get("redirect");
+
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log({ data });
+    handleUserLogin(data);
+    userLoading(true);
   };
+
+  useEffect(() => {
+    if (!isPending && isSuccess) {
+      if (redirect) {
+        router.push(redirect);
+      } else {
+        if (user?.role === "CUSTOMER") {
+          router.push("/customer");
+        } else if(user?.role === "ADMIN") {
+          router.push("/admin");
+        }else{
+          router.push("/vendor")
+        }
+      }
+    }
+  }, [isPending, isSuccess, userLoading, user]);
+
 
   return (
     <div className="flex items-center justify-center px-4 min-h-[70vh]">
@@ -84,7 +113,7 @@ export default function Login() {
             <div className="flex justify-end">
               <Link
                 href="/forget-password"
-                className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+                className="text-sm text-blue-400 hover:text-blue-300"
               >
                 Forgot Password?
               </Link>
@@ -102,7 +131,7 @@ export default function Login() {
             Don&lsquo;t have an account?{" "}
             <Link
               href="/signup"
-              className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-semibold"
+              className="text-blue-400 hover:text-blue-300 font-semibold"
             >
               Sign Up
             </Link>
