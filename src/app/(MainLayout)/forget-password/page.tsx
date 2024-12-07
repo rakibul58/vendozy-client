@@ -8,45 +8,19 @@ import VForm from "@/components/form/VForm";
 import { Button } from "@/components/ui/button";
 import VInput from "@/components/form/VInput";
 import { AuthValidations } from "@/schemas/auth.validations";
-import { useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useUserLogin } from "@/hooks/auth.hook";
-import { useUser } from "@/context/user.provider";
+import { useUserForgetPassword } from "@/hooks/auth.hook";
 import Loading from "@/components/modules/Shared/LoadingBlur";
 
-export default function Login() {
-  const { mutate: handleUserLogin, isPending, isSuccess } = useUserLogin();
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const { user, setIsLoading: userLoading } = useUser();
-
-  const redirect = searchParams.get("redirect");
+export default function ForgetPassword() {
+  const { mutate: handleForgetPassword, isPending } = useUserForgetPassword();
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    handleUserLogin(data);
-    userLoading(true);
+    handleForgetPassword(data);
   };
-
-  useEffect(() => {
-    if (!isPending && isSuccess) {
-      if (redirect) {
-        router.push(redirect);
-      } else {
-        if (user?.role === "CUSTOMER") {
-          router.push("/customer");
-        } else if (user?.role === "ADMIN") {
-          router.push("/admin");
-        } else {
-          router.push("/vendor");
-        }
-      }
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isPending, isSuccess, userLoading, user]);
 
   return (
     <div className="flex items-center justify-center px-4 min-h-[70vh]">
-      {isPending && <Loading />}
+      {isPending && <Loading/>}
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -63,33 +37,29 @@ export default function Login() {
           className="text-center"
         >
           <h3 className="text-3xl font-bold text-gray-800 dark:text-gray-200">
-            Login to Vendozy
+            Forget Password
           </h3>
           <p className="mt-2 text-gray-600 dark:text-gray-400">
-            Welcome Back! Let&lsquo;s Get Started
+            Enter your email to reset your password
           </p>
         </motion.div>
 
         <VForm
-          resolver={zodResolver(AuthValidations.loginValidationSchema)}
+          resolver={zodResolver(AuthValidations.forgetPasswordValidationSchema)}
           onSubmit={onSubmit}
         >
           <motion.div
-            initial={{ x: -20, opacity: 0 }}
+            initial={{ x: 0, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.3 }}
             className="mb-4"
           >
-            <VInput label="Email" name="email" type="email" placeholder="Enter your email" />
-          </motion.div>
-
-          <motion.div
-            initial={{ x: 20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="mb-4"
-          >
-            <VInput label="Password" name="password" type="password" placeholder="Enter your password" />
+            <VInput
+              label="Email"
+              name="email"
+              type="email"
+              placeholder="Enter your registered email"
+            />
           </motion.div>
 
           <motion.div
@@ -102,24 +72,16 @@ export default function Login() {
               className="w-full rounded-md font-semibold group"
               size="lg"
               type="submit"
+              disabled={isPending}
             >
               <motion.span
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="inline-block"
               >
-                {isPending ? "Logging in...." : "Login"}
+                {isPending ? "Sending Reset Link..." : "Reset Password"}
               </motion.span>
             </Button>
-
-            <div className="flex justify-end">
-              <Link
-                href="/forget-password"
-                className="text-sm text-blue-400 hover:text-blue-300"
-              >
-                Forgot Password?
-              </Link>
-            </div>
           </motion.div>
         </VForm>
 
@@ -130,12 +92,12 @@ export default function Login() {
           className="text-center mt-6"
         >
           <p className="text-gray-600">
-            Don&lsquo;t have an account?{" "}
+            Remember your password?{" "}
             <Link
-              href="/signup"
+              href="/login"
               className="text-blue-400 hover:text-blue-300 font-semibold"
             >
-              Sign Up
+              Back to Login
             </Link>
           </p>
         </motion.div>

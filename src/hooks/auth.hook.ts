@@ -7,7 +7,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { loginUser } from "@/services/AuthServices";
+import { forgetPassword, loginUser, resetPassword } from "@/services/AuthServices";
 import { toast } from "sonner";
 
 export const useUserLogin = () => {
@@ -19,6 +19,32 @@ export const useUserLogin = () => {
     },
     onError: (error) => {
       toast.error("Login Failed. Please Provide Valid Email and Password.");
+    },
+  });
+};
+
+export const useUserForgetPassword = () => {
+  return useMutation<any, Error, FieldValues>({
+    mutationKey: ["USER_FORGET_PASSWORD"],
+    mutationFn: async (payload) => await forgetPassword(payload),
+    onSuccess: () => {
+      toast.success("Reset Password Link sent successfully.");
+    },
+    onError: (error) => {
+      toast.error("Something went wrong.");
+    },
+  });
+};
+
+export const useUserResetPassword = () => {
+  return useMutation<any, Error, FieldValues>({
+    mutationKey: ["USER_RESET_PASSWORD"],
+    mutationFn: async (payload) => await resetPassword(payload),
+    onSuccess: () => {
+      toast.success("Password reset successfully.");
+    },
+    onError: (error) => {
+      toast.error("Something went wrong.");
     },
   });
 };

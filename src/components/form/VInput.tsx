@@ -13,6 +13,7 @@ export interface IInput {
   name: string;
   disabled?: boolean;
   startContent?: ReactNode;
+  placeholder?: string
 }
 
 export default function VInput({
@@ -20,6 +21,7 @@ export default function VInput({
   type = "text",
   label,
   name,
+  placeholder
 }: IInput) {
   const {
     register,
@@ -41,6 +43,7 @@ export default function VInput({
         aria-invalid={!!errors[name]}
         aria-describedby={errors[name] ? `${name}-error` : undefined}
         className="w-full py-5"
+        placeholder={placeholder}
       />
 
       {errors[name] && (

@@ -5,6 +5,8 @@ import axiosInstance from "@/lib/AxiosInstance";
 import { cookies } from "next/headers";
 import { FieldValues } from "react-hook-form";
 import { jwtDecode } from "jwt-decode";
+import envConfig from "@/config/envConfig";
+import axios from "axios";
 
 export const loginUser = async (userData: FieldValues) => {
   try {
@@ -49,15 +51,15 @@ export const getCurrentUser = async () => {
   if (accessToken) {
     decodedToken = await jwtDecode(accessToken);
 
-    console.log({ decodedToken });
+    // console.log({ decodedToken });
 
     const { data } = await axiosInstance.get("/users/me");
 
-    console.log({
-      email: decodedToken.email,
-      role: decodedToken.role,
-      user: data,
-    });
+    // console.log({
+    //   email: decodedToken.email,
+    //   role: decodedToken.role,
+    //   user: data,
+    // });
 
     return {
       email: decodedToken.email,
@@ -67,4 +69,38 @@ export const getCurrentUser = async () => {
   }
 
   return decodedToken;
+};
+
+export const forgetPassword = async (payload: FieldValues) => {
+  try {
+    const { data } = await axiosInstance.post("/auth/forget-password", payload);
+    return data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+
+export const resetPassword = async (payload: FieldValues) => {
+  try {
+    console.log({payload});
+    const { data } = await axios.post(
+      `${envConfig.baseApi}/auth/reset-password`,
+      payload.data,
+      {
+        headers: {
+          Authorization: `${payload.token}`,
+        },
+      }
+    );
+    console.log({data});
+    return data;
+  } catch (error: any) {
+    console.log({error});
+    throw new Error(error.response);
+  }
+};
+
+export const logout = async () => {
+  (await cookies()).delete("accessToken");
+  (await cookies()).delete("refreshToken");
 };

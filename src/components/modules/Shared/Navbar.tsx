@@ -13,9 +13,31 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ModeToggle";
+import { useUser } from "@/context/user.provider";
+import { usePathname, useRouter } from "next/navigation";
+import { logout } from "@/services/AuthServices";
+import Loading from "./LoadingBlur";
+import { protectedRoutes } from "@/constants";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
+  const { user, setIsLoading: userLoading } = useUser();
+  const [isNavigateLoading, setIsNavigateLoading] = useState(false);
+
+  const handleLogout = async () => {
+    setIsNavigateLoading(true);
+    logout();
+    userLoading(true);
+
+    if (protectedRoutes.some((route) => pathname.match(route))) {
+      router.push("/");
+      setIsNavigateLoading(false);
+    }
+
+    setIsNavigateLoading(false);
+  };
 
   const menuItems = [
     { href: "/", label: "Home" },
@@ -32,6 +54,7 @@ const Navbar = () => {
       transition={{ duration: 0.5 }}
       className="sticky top-0 z-50 bg-background"
     >
+      {isNavigateLoading && <Loading />}
       <header className="flex items-center justify-between px-4 py-3 md:px-8">
         {/* Logo */}
         <Link
@@ -96,11 +119,15 @@ const Navbar = () => {
             </Button>
           </Link>
           <ModeToggle />
-          <Link href="/login">
-            <Button variant={"outline"}>
-             Login
+          {user ? (
+            <Button onClick={() => handleLogout()} variant={"destructive"}>
+              Logout
             </Button>
-          </Link>
+          ) : (
+            <Link href="/login">
+              <Button variant={"outline"}>Login</Button>
+            </Link>
+          )}
         </div>
       </header>
     </motion.div>
