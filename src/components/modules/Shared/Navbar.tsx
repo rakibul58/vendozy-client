@@ -18,6 +18,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { logout } from "@/services/AuthServices";
 import Loading from "./LoadingBlur";
 import { protectedRoutes } from "@/constants";
+import UserAvatarDropdown from "./UserAvatarDropdown";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -120,9 +121,14 @@ const Navbar = () => {
           </Link>
           <ModeToggle />
           {user ? (
-            <Button onClick={() => handleLogout()} variant={"destructive"}>
-              Logout
-            </Button>
+            <UserAvatarDropdown
+              user={user?.user}
+              onLogout={handleLogout}
+              role={user?.role}
+              image={
+                user?.role === "VENDOR" ? user.user.logo : user.user.profileImg
+              }
+            />
           ) : (
             <Link href="/login">
               <Button variant={"outline"}>Login</Button>

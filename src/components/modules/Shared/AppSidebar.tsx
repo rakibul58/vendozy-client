@@ -162,8 +162,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <SidebarContent>
           <Link href="/" className="flex items-center gap-2 font-bold">
-            <Store />
-            <h1 className="font-serif italic text-lg">Vendozy</h1>
+            <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+              <Store />
+              <div className="grid flex-1 text-left text-sm leading-tight">
+                <h1 className="font-serif italic text-lg truncate">Vendozy</h1>
+              </div>
+            </div>
           </Link>
         </SidebarContent>
       </SidebarHeader>

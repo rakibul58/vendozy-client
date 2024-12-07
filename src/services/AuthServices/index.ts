@@ -55,16 +55,10 @@ export const getCurrentUser = async () => {
 
     const { data } = await axiosInstance.get("/users/me");
 
-    // console.log({
-    //   email: decodedToken.email,
-    //   role: decodedToken.role,
-    //   user: data,
-    // });
-
     return {
       email: decodedToken.email,
       role: decodedToken.role,
-      user: data,
+      user: data.data,
     };
   }
 
