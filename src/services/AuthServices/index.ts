@@ -26,7 +26,29 @@ export const loginUser = async (userData: FieldValues) => {
 
 export const registerCustomer = async (userData: FieldValues) => {
   try {
-    const { data } = await axiosInstance.post("/auth/register/customer", userData);
+    const { data } = await axiosInstance.post(
+      "/auth/register/customer",
+      userData
+    );
+
+    if (data.success) {
+      const cookieStore = cookies();
+      (await cookieStore).set("accessToken", data?.data?.accessToken);
+      (await cookieStore).set("refreshToken", data?.data?.refreshToken);
+    }
+
+    return data;
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+export const registerVendor = async (userData: FieldValues) => {
+  try {
+    const { data } = await axiosInstance.post(
+      "/auth/register/vendor",
+      userData
+    );
 
     if (data.success) {
       const cookieStore = cookies();
@@ -92,7 +114,7 @@ export const forgetPassword = async (payload: FieldValues) => {
 
 export const resetPassword = async (payload: FieldValues) => {
   try {
-    console.log({payload});
+    console.log({ payload });
     const { data } = await axios.post(
       `${envConfig.baseApi}/auth/reset-password`,
       payload.data,
@@ -102,10 +124,10 @@ export const resetPassword = async (payload: FieldValues) => {
         },
       }
     );
-    console.log({data});
+    console.log({ data });
     return data;
   } catch (error: any) {
-    console.log({error});
+    console.log({ error });
     throw new Error(error.response);
   }
 };

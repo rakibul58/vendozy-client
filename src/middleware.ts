@@ -12,45 +12,57 @@ const roleBasedRoutes = {
   CUSTOMER: [/^\/customer/],
 };
 
-// This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  const user = await getCurrentUser();
+  let user;
+  try {
+    user = await getCurrentUser();
+  } catch (error) {
+    console.error("Error fetching current user:", error);
+    user = null;
+  }
 
+  // Unauthenticated user handling
   if (!user) {
     if (AuthRoutes.includes(pathname)) {
       return NextResponse.next();
     } else {
+      // Safely construct redirect URL
       return NextResponse.redirect(
-        new URL(`/login?redirect=${pathname}`, request.url)
+        new URL(`/login?redirect=${encodeURIComponent(pathname)}`, request.url)
       );
     }
   }
 
-  if (user?.role && roleBasedRoutes[user?.role as Role]) {
-    if (user?.role === "VENDOR" && user?.user?.isOnboarded === false) {
-      return NextResponse.redirect(new URL(`/vendor/onboarding`, request.url));
+  // Vendor onboarding check
+  if (user?.role === "VENDOR" && user?.user?.isOnboarded === false) {
+    if (pathname !== "/vendor/onboarding") {
+      return NextResponse.redirect(
+        new URL("/vendor/onboarding", request.url)
+      );
     }
+    return NextResponse.next();
+  }
+
+  // Role-based route access
+  if (user?.role && roleBasedRoutes[user?.role as Role]) {
     const routes = roleBasedRoutes[user?.role as Role];
 
-    if (routes.some((route) => pathname.match(route))) {
+    if (routes.some((route) => route.test(pathname))) {
       return NextResponse.next();
     }
   }
 
+  // Fallback to home page for unauthorized access
   return NextResponse.redirect(new URL("/", request.url));
 }
 
-// See "Matching Paths" below to learn more
 export const config = {
   matcher: [
-    "/customer",
-    "/customer/:page*",
-    "/vendor",
-    "/vendor/:page*",
-    "/admin",
-    "/admin/:page*",
+    "/customer/:path*",
+    "/vendor/:path*",
+    "/admin/:path*",
     "/login",
     "/signup",
   ],

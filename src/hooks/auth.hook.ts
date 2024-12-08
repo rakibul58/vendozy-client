@@ -11,6 +11,7 @@ import {
   forgetPassword,
   loginUser,
   registerCustomer,
+  registerVendor,
   resetPassword,
 } from "@/services/AuthServices";
 import { toast } from "sonner";
@@ -32,6 +33,19 @@ export const useCustomerRegistration = () => {
   return useMutation<any, Error, FieldValues>({
     mutationKey: ["CUSTOMER_REGISTRATION"],
     mutationFn: async (userData) => await registerCustomer(userData),
+    onSuccess: () => {
+      toast.success("User Registration successful.");
+    },
+    onError: (error) => {
+      toast.error("Registration Failed. Please Provide Valid Information.");
+    },
+  });
+};
+
+export const useVendorRegistration = () => {
+  return useMutation<any, Error, FieldValues>({
+    mutationKey: ["VENDOR_REGISTRATION"],
+    mutationFn: async (userData) => await registerVendor(userData),
     onSuccess: () => {
       toast.success("User Registration successful.");
     },

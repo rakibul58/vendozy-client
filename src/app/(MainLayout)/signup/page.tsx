@@ -14,7 +14,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import VTextArea from "@/components/form/VTextArea";
 import { useImageUpload } from "@/hooks/imageUpload.hook";
 import Image from "next/image";
-import { useCustomerRegistration } from "@/hooks/auth.hook";
+import {
+  useCustomerRegistration,
+  useVendorRegistration,
+} from "@/hooks/auth.hook";
 import Loading from "@/components/modules/Shared/LoadingBlur";
 import { useUser } from "@/context/user.provider";
 
@@ -28,6 +31,11 @@ export default function Signup() {
     isPending,
     isSuccess,
   } = useCustomerRegistration();
+  const {
+    mutate: handleVendorRegistration,
+    isPending: vendorIsPending,
+    isSuccess: vendorIsSuccess,
+  } = useVendorRegistration();
   const { user, setIsLoading: userLoading } = useUser();
   const {
     previewUrl,
@@ -39,11 +47,15 @@ export default function Signup() {
   } = useImageUpload();
 
   const handleCreateVendor: SubmitHandler<FieldValues> = (data) => {
-    // Combine selected role with form data
-
-    console.log(data);
-
-    // router.push("/customer");
+    const registrationData = {
+      password: data.password,
+      vendor: {
+        email: data.email,
+        phone: data.phone,
+      },
+    };
+    handleVendorRegistration(registrationData);
+    userLoading(true);
   };
 
   const handleCreateCustomer: SubmitHandler<FieldValues> = (data) => {
@@ -60,13 +72,10 @@ export default function Signup() {
 
     handleCustomerRegistration(registrationData);
     userLoading(true);
-
-    if (isSuccess) {
-      router.push("/customer");
-    }
   };
 
   useEffect(() => {
+    console.log("object 1");
     if (!isPending && isSuccess) {
       if (user?.role === "CUSTOMER") {
         router.push("/customer");
@@ -77,9 +86,21 @@ export default function Signup() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPending, isSuccess, userLoading, user]);
 
+  useEffect(() => {
+    console.log("object 2");
+    if (!vendorIsPending && vendorIsSuccess) {
+      if (user?.role === "CUSTOMER") {
+        router.push("/customer");
+      } else {
+        router.push("/vendor");
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [vendorIsPending, vendorIsSuccess, userLoading, user]);
+
   return (
     <div className="flex items-center justify-center px-4 min-h-[70vh] mb-10">
-      {isPending && <Loading />}
+      {(isPending || vendorIsPending) && <Loading />}
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
