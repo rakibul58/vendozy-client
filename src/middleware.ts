@@ -29,6 +29,9 @@ export async function middleware(request: NextRequest) {
   }
 
   if (user?.role && roleBasedRoutes[user?.role as Role]) {
+    if (user?.role === "VENDOR" && user?.user?.isOnboarded === false) {
+      return NextResponse.redirect(new URL(`/vendor/onboarding`, request.url));
+    }
     const routes = roleBasedRoutes[user?.role as Role];
 
     if (routes.some((route) => pathname.match(route))) {
