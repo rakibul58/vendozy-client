@@ -7,7 +7,12 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { forgetPassword, loginUser, resetPassword } from "@/services/AuthServices";
+import {
+  forgetPassword,
+  loginUser,
+  registerCustomer,
+  resetPassword,
+} from "@/services/AuthServices";
 import { toast } from "sonner";
 
 export const useUserLogin = () => {
@@ -19,6 +24,19 @@ export const useUserLogin = () => {
     },
     onError: (error) => {
       toast.error("Login Failed. Please Provide Valid Email and Password.");
+    },
+  });
+};
+
+export const useCustomerRegistration = () => {
+  return useMutation<any, Error, FieldValues>({
+    mutationKey: ["CUSTOMER_REGISTRATION"],
+    mutationFn: async (userData) => await registerCustomer(userData),
+    onSuccess: () => {
+      toast.success("User Registration successful.");
+    },
+    onError: (error) => {
+      toast.error("Registration Failed. Please Provide Valid Information.");
     },
   });
 };

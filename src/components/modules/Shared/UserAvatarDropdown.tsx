@@ -49,7 +49,7 @@ export const UserAvatarDropdown: React.FC<UserAvatarDropdownProps> = ({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar className="cursor-pointer">
+        <Avatar className="cursor-pointer size-9 border-2">
           <AvatarImage src={image || ""} alt={`${user.name}'s profile`} />
           <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
         </Avatar>

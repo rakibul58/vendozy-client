@@ -25,8 +25,55 @@ export const resetPasswordValidationSchema = z
     path: ["confirmPassword"],
   });
 
+const createVendorValidationSchema = z.object({
+  password: z
+    .string({
+      required_error: "Password is required",
+    })
+    .min(1, "Please add a password"),
+  email: z
+    .string({
+      required_error: "Email is required!",
+    })
+    .min(1, "Please add an Email"),
+  phone: z
+    .string({
+      required_error: "Phone numbers is required!",
+    })
+    .min(1, "Please add phone number"),
+});
+
+const createCustomerValidationSchema = z.object({
+  password: z
+    .string({
+      required_error: "Password is required",
+    })
+    .min(1, "Please add a password"),
+  name: z
+    .string({
+      required_error: "Name is required!",
+    })
+    .min(1, "Please add your name"),
+  email: z
+    .string({
+      required_error: "Email is required!",
+    })
+    .min(1, "Please add an email"),
+  phone: z
+    .string({
+      required_error: "Phone numbers is required!",
+    })
+    .min(1, "Please add a phone number"),
+  address: z
+    .string({ required_error: "Address is Required!" })
+    .min(1, "Please add an address"),
+  profileImg: z.string().optional(),
+});
+
 export const AuthValidations = {
   loginValidationSchema,
   forgetPasswordValidationSchema,
   resetPasswordValidationSchema,
+  createCustomerValidationSchema,
+  createVendorValidationSchema,
 };

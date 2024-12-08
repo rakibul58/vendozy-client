@@ -24,6 +24,22 @@ export const loginUser = async (userData: FieldValues) => {
   }
 };
 
+export const registerCustomer = async (userData: FieldValues) => {
+  try {
+    const { data } = await axiosInstance.post("/auth/register/customer", userData);
+
+    if (data.success) {
+      const cookieStore = cookies();
+      (await cookieStore).set("accessToken", data?.data?.accessToken);
+      (await cookieStore).set("refreshToken", data?.data?.refreshToken);
+    }
+
+    return data;
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};
+
 export const getNewAccessToken = async () => {
   try {
     const refreshToken = (await cookies()).get("refreshToken")?.value;

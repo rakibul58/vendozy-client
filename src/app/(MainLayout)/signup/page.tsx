@@ -1,42 +1,85 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
-// import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import VForm from "@/components/form/VForm";
 import { Button } from "@/components/ui/button";
 import VInput from "@/components/form/VInput";
-// import { AuthValidations } from "@/schemas/auth.validations";
-import { Store, User } from "lucide-react";
+import { Camera, Store, User, X } from "lucide-react";
+import { AuthValidations } from "@/schemas/auth.validations";
+import { zodResolver } from "@hookform/resolvers/zod";
+import VTextArea from "@/components/form/VTextArea";
+import { useImageUpload } from "@/hooks/imageUpload.hook";
+import Image from "next/image";
+import { useCustomerRegistration } from "@/hooks/auth.hook";
+import Loading from "@/components/modules/Shared/LoadingBlur";
+import { useUser } from "@/context/user.provider";
 
 export default function Signup() {
-  const [selectedRole, setSelectedRole] = useState<"customer" | "vendor" | null>(null);
+  const [selectedRole, setSelectedRole] = useState<
+    "customer" | "vendor" | null
+  >(null);
   const router = useRouter();
+  const {
+    mutate: handleCustomerRegistration,
+    isPending,
+    isSuccess,
+  } = useCustomerRegistration();
+  const { user, setIsLoading: userLoading } = useUser();
+  const {
+    previewUrl,
+    isUploading,
+    uploadedImageUrl,
+    handleImageChange,
+    resetImage,
+    uploadError,
+  } = useImageUpload();
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const handleCreateVendor: SubmitHandler<FieldValues> = (data) => {
     // Combine selected role with form data
+
+    console.log(data);
+
+    // router.push("/customer");
+  };
+
+  const handleCreateCustomer: SubmitHandler<FieldValues> = (data) => {
     const registrationData = {
-      ...data,
-      role: selectedRole
+      password: data.password,
+      customer: {
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        address: data.address,
+        profileImg: uploadedImageUrl,
+      },
     };
 
-    console.log({ registrationData });
+    handleCustomerRegistration(registrationData);
+    userLoading(true);
 
-    // Simulated registration logic
-    if (selectedRole === "customer") {
-      // Redirect to customer dashboard or profile completion
-      router.push("/customer/profile");
-    } else if (selectedRole === "vendor") {
-      // Redirect to vendor shop setup
-      router.push("/vendor/setup-shop");
+    if (isSuccess) {
+      router.push("/customer");
     }
   };
 
+  useEffect(() => {
+    if (!isPending && isSuccess) {
+      if (user?.role === "CUSTOMER") {
+        router.push("/customer");
+      } else {
+        router.push("/vendor");
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPending, isSuccess, userLoading, user]);
+
   return (
-    <div className="flex items-center justify-center px-4 min-h-[70vh]">
+    <div className="flex items-center justify-center px-4 min-h-[70vh] mb-10">
+      {isPending && <Loading />}
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -73,9 +116,11 @@ export default function Signup() {
             className={`
               flex items-center space-x-2 px-4 py-2 rounded-md 
               transition-all duration-300
-              ${selectedRole === "customer" 
-                ? "bg-blue-400 hover:bg-blue-300 text-white" 
-                : "border border-gray-300 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-900 dark:text-gray-400"}
+              ${
+                selectedRole === "customer"
+                  ? "bg-blue-400 hover:bg-blue-300 text-white"
+                  : "border border-gray-300 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-900 dark:text-gray-400"
+              }
             `}
           >
             <User className="w-5 h-5" />
@@ -88,9 +133,11 @@ export default function Signup() {
               flex items-center space-x-2 px-4 py-2 rounded-md 
               transition-all duration-300
               
-              ${selectedRole === "vendor" 
-                ? "bg-blue-400 hover:bg-blue-300 text-white " 
-                : "border border-gray-300 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-900 dark:text-gray-400"}
+              ${
+                selectedRole === "vendor"
+                  ? "bg-blue-400 hover:bg-blue-300 text-white "
+                  : "border border-gray-300 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-900 dark:text-gray-400"
+              }
             `}
           >
             <Store className="w-5 h-5" />
@@ -98,71 +145,230 @@ export default function Signup() {
           </button>
         </motion.div>
 
-        {selectedRole && (
-          <VForm
-        //     resolver={zodResolver(AuthValidations.signupValidationSchema)}
-            onSubmit={onSubmit}
-          >
-            <motion.div
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              className="mb-4"
+        {selectedRole &&
+          (selectedRole === "customer" ? (
+            <VForm
+              resolver={zodResolver(
+                AuthValidations.createCustomerValidationSchema
+              )}
+              onSubmit={handleCreateCustomer}
             >
-              <VInput label="Full Name" name="fullName" type="text" />
-            </motion.div>
-
-            <motion.div
-              initial={{ x: 20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              className="mb-4"
-            >
-              <VInput label="Email" name="email" type="email" />
-            </motion.div>
-
-            <motion.div
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.6 }}
-              className="mb-4"
-            >
-              <VInput label="Password" name="password" type="password" />
-            </motion.div>
-
-            <motion.div
-              initial={{ x: 20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.7 }}
-              className="mb-4"
-            >
-              <VInput label="Confirm Password" name="confirmPassword" type="password" />
-            </motion.div>
-
-            <motion.div 
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.8 }}
-              className="flex flex-col space-y-4"
-            >
-              <Button
-                className="w-full rounded-md font-semibold group"
-                size="lg"
-                type="submit"
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="mb-6 flex flex-col items-center"
               >
-                <motion.span
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="inline-block"
-                >
-                  Create Account
-                </motion.span>
-              </Button>
-            </motion.div>
-          </VForm>
-        )}
+                <div className="relative w-32 h-32 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center">
+                  {previewUrl ? (
+                    <>
+                      <div className="relative w-full h-full">
+                        <Image
+                          src={previewUrl}
+                          alt="Profile Preview"
+                          fill
+                          className="rounded-full object-cover"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
+                      </div>
+                      {/* Remove button */}
+                      <button
+                        type="button"
+                        className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
+                        onClick={resetImage}
+                      >
+                        <X size={16} />
+                      </button>
+                    </>
+                  ) : (
+                    <label className="cursor-pointer flex flex-col items-center">
+                      <Camera className="w-10 h-10 text-gray-400" />
+                      <span className="text-sm text-gray-500 mt-2">
+                        Upload Photo
+                      </span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleImageChange}
+                      />
+                    </label>
+                  )}
+                </div>
+                {isUploading && (
+                  <div className="text-sm text-blue-500 mt-2">Uploading...</div>
+                )}
+                {uploadError && (
+                  <div className="text-sm text-red-500 mt-2">
+                    Upload failed: {uploadError.message}
+                  </div>
+                )}
+              </motion.div>
+              <motion.div
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className="mb-4"
+              >
+                <VInput
+                  label="Full Name"
+                  name="name"
+                  type="text"
+                  placeholder="Enter Full Name"
+                />
+              </motion.div>
 
-        <motion.div 
+              <motion.div
+                initial={{ x: 20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="mb-4"
+              >
+                <VInput
+                  label="Email"
+                  name="email"
+                  type="email"
+                  placeholder="Enter your Email"
+                />
+              </motion.div>
+
+              <motion.div
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.6 }}
+                className="mb-4"
+              >
+                <VInput
+                  label="Password"
+                  name="password"
+                  type="password"
+                  placeholder="Enter Password"
+                />
+              </motion.div>
+
+              <motion.div
+                initial={{ x: 20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="mb-4"
+              >
+                <VInput
+                  label="Phone"
+                  name="phone"
+                  type="text"
+                  placeholder="Enter your phone"
+                />
+              </motion.div>
+
+              <motion.div
+                initial={{ x: 20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.3 }}
+                className="mb-4"
+              >
+                <VTextArea
+                  label="Address"
+                  name="address"
+                  type="text"
+                  placeholder="Enter your Address"
+                />
+              </motion.div>
+
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.8 }}
+                className="flex flex-col space-y-4"
+              >
+                <Button
+                  className="w-full rounded-md font-semibold group"
+                  size="lg"
+                  type="submit"
+                >
+                  <motion.span
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="inline-block"
+                  >
+                    Create Account
+                  </motion.span>
+                </Button>
+              </motion.div>
+            </VForm>
+          ) : (
+            <VForm
+              resolver={zodResolver(
+                AuthValidations.createVendorValidationSchema
+              )}
+              onSubmit={handleCreateVendor}
+            >
+              <motion.div
+                initial={{ x: 20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="mb-4"
+              >
+                <VInput
+                  label="Email"
+                  name="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  required
+                />
+              </motion.div>
+
+              <motion.div
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.6 }}
+                className="mb-4"
+              >
+                <VInput
+                  label="Password"
+                  name="password"
+                  type="password"
+                  placeholder="Enter your password"
+                />
+              </motion.div>
+
+              <motion.div
+                initial={{ x: 20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="mb-4"
+              >
+                <VInput
+                  label="Phone"
+                  name="phone"
+                  type="text"
+                  placeholder="Enter your phone"
+                />
+              </motion.div>
+
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.8 }}
+                className="flex flex-col space-y-4"
+              >
+                <Button
+                  className="w-full rounded-md font-semibold group"
+                  size="lg"
+                  type="submit"
+                >
+                  <motion.span
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="inline-block"
+                  >
+                    Create Account
+                  </motion.span>
+                </Button>
+              </motion.div>
+            </VForm>
+          ))}
+
+        <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.9 }}
