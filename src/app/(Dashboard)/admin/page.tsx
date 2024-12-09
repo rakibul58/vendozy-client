@@ -1,7 +1,15 @@
-export default function page(){
+export default function AdminDashboard() {
   return (
     <div>
-      <h1>This is Admin page Component</h1>
+      <div className="">
+        <h1 className="text-4xl font-bold mb-4">
+          Welcome to the <span className="text-primary">Admin Dashboard</span>
+        </h1>
+        <p className="">
+          Manage your application settings, users, and more from this central hub.
+        </p>
+      
+      </div>
     </div>
   );
-};
+}

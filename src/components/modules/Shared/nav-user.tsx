@@ -25,6 +25,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { protectedRoutes } from "@/constants";
 import { logout } from "@/services/AuthServices";
 import Loading from "./LoadingBlur";
+import { ModeToggle } from "@/components/ModeToggle";
 
 interface UserAvatarDropdownProps {
   user: {
@@ -102,9 +103,10 @@ export function NavUser({ user, role, image }: UserAvatarDropdownProps) {
                   <AvatarFallback className="rounded-lg">{getInitials(user?.name) || "CN"}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user?.name}</span>
-                  <span className="truncate text-xs">{user?.email}</span>
+                  <span className="truncate font-semibold">{user?.name || "Username"}</span>
+                  <span className="truncate text-xs">{user?.email || "example@gmail.com"}</span>
                 </div>
+                <ModeToggle />
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />

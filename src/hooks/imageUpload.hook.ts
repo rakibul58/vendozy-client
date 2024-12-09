@@ -21,7 +21,6 @@ export const useImageUpload = () => {
       console.error('Image upload error', error);
       setPreviewUrl(null);
       setUploadedImageUrl(null);
-      // Note: The toast is already handled in the handleImageUpload function
     }
   });
 
