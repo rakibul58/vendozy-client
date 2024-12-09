@@ -163,7 +163,7 @@ export default function CategoryManagementPage() {
         <Input
           placeholder="Search categories..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => {setSearchTerm(e.target.value)}}
           className="w-1/3"
         />
         <Button onClick={() => handleOpenDialog()}>

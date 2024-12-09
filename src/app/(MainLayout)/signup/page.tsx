@@ -75,7 +75,7 @@ export default function Signup() {
   };
 
   useEffect(() => {
-    console.log("object 1");
+    // console.log("object 1");
     if (!isPending && isSuccess) {
       if (user?.role === "CUSTOMER") {
         router.push("/customer");
@@ -87,7 +87,7 @@ export default function Signup() {
   }, [isPending, isSuccess, userLoading, user]);
 
   useEffect(() => {
-    console.log("object 2");
+    // console.log("object 2");
     if (!vendorIsPending && vendorIsSuccess) {
       if (user?.role === "CUSTOMER") {
         router.push("/customer");

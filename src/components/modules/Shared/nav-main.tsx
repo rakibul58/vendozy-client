@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { SidebarGroup, SidebarMenuButton } from "@/components/ui/sidebar";
@@ -74,12 +75,12 @@ const customerRoutes: RouteItem[] = [
   }
 ];
 
-export function NavMain({ role }: { role: "ADMIN" | "CUSTOMER" | "VENDOR" }) {
+export function NavMain({ role, user }: { role: "ADMIN" | "CUSTOMER" | "VENDOR", user: any }) {
   // Select routes based on role
   const routes = (() => {
     switch (role) {
       case "ADMIN": return adminRoutes;
-      case "VENDOR": return vendorRoutes;
+      case "VENDOR": return  user.isOnboarded ? vendorRoutes : [];
       case "CUSTOMER": return customerRoutes;
       default: return [];
     }
@@ -87,7 +88,7 @@ export function NavMain({ role }: { role: "ADMIN" | "CUSTOMER" | "VENDOR" }) {
 
   return (
     <SidebarGroup className="mt-6 space-y-2">
-      {routes.map((route) => (
+      {routes.map((route: RouteItem) => (
         <SidebarMenuButton key={route.href}>
           <Link 
             href={route.href} 

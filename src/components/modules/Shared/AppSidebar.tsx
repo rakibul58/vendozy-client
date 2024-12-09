@@ -32,7 +32,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarContent>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain role={user?.role} />
+        <NavMain role={user?.role} user={user?.user} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser
