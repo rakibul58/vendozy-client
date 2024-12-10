@@ -12,8 +12,25 @@ const forgetPasswordValidationSchema = z.object({
   email: z.string().trim().email("Please enter a valid email").toLowerCase(),
 });
 
-export const resetPasswordValidationSchema = z
+const resetPasswordValidationSchema = z
   .object({
+    newPassword: z
+      .string({ required_error: "Please add a Password" })
+      .min(1, "Please add a Password")
+      .trim(),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+const changePasswordValidationSchema = z
+  .object({
+    currentPassword: z
+      .string({ required_error: "Please add current Password" })
+      .min(1, "Please add current Password")
+      .trim(),
     newPassword: z
       .string({ required_error: "Please add a Password" })
       .min(1, "Please add a Password")
@@ -76,4 +93,5 @@ export const AuthValidations = {
   resetPasswordValidationSchema,
   createCustomerValidationSchema,
   createVendorValidationSchema,
+  changePasswordValidationSchema
 };

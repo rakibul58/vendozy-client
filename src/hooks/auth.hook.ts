@@ -8,6 +8,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import {
+  changePassword,
   forgetPassword,
   loginUser,
   registerCustomer,
@@ -77,6 +78,19 @@ export const useUserResetPassword = () => {
     },
     onError: (error) => {
       toast.error("Something went wrong.");
+    },
+  });
+};
+
+export const useUserChangePassword = () => {
+  return useMutation<any, Error, FieldValues>({
+    mutationKey: ["USER_CHANGE_PASSWORD"],
+    mutationFn: async (payload) => await changePassword(payload),
+    onSuccess: () => {
+      toast.success("Password changed successfully.");
+    },
+    onError: (error) => {
+      toast.error("Provide correct password.");
     },
   });
 };

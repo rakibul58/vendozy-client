@@ -132,6 +132,15 @@ export const resetPassword = async (payload: FieldValues) => {
   }
 };
 
+export const changePassword = async (payload: FieldValues) => {
+  try {
+    const { data } = await axiosInstance.post("/auth/change-password", payload);
+    return data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+
 export const logout = async () => {
   (await cookies()).delete("accessToken");
   (await cookies()).delete("refreshToken");

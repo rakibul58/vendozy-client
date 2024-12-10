@@ -17,7 +17,7 @@ const categories = [
   {
     name: "Fashion",
     icon: Shirt,
-    color: "text-primary",
+    color: "text-accent",
     products: [
       "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8ZmFzaGlvbnxlbnwwfDB8MHx8fDI%3D",
       "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmFzaGlvbnxlbnwwfDB8MHx8fDI%3D",
@@ -37,7 +37,7 @@ const categories = [
   {
     name: "Accessories",
     icon: Headphones,
-    color: "text-secondary",
+    color: "text-accent",
     products: [
       "https://images.unsplash.com/photo-1614860243518-c12eb2fdf66c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       "https://images.unsplash.com/3/www.madebyvadim.com.jpg?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YWNjZXNzb3JpZXMlMjBoZWFkcGhvbmV8ZW58MHx8MHx8fDI%3D",
@@ -47,7 +47,7 @@ const categories = [
   {
     name: "Home & Living",
     icon: Sofa,
-    color: "text-muted-foreground",
+    color: "text-accent",
     products: [
       "https://images.unsplash.com/photo-1616046229478-9901c5536a45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8aG9tZSUyMGRlY29yfGVufDB8MHwwfHx8Mg%3D%3D",
       "https://images.unsplash.com/photo-1593498208655-b1f7ddabaffa?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8aG9tZSUyMGFuZCUyMGxpdmluZ3xlbnwwfHwwfHx8Mg%3D%3D",

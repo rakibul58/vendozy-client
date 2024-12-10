@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
-import { ChevronsUpDown, LogOut, Sparkles } from "lucide-react";
+import { ChevronsUpDown, KeyIcon, LogOut } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -26,6 +26,7 @@ import { protectedRoutes } from "@/constants";
 import { logout } from "@/services/AuthServices";
 import Loading from "./LoadingBlur";
 import { ModeToggle } from "@/components/ModeToggle";
+import Link from "next/link";
 
 interface UserAvatarDropdownProps {
   user: {
@@ -84,8 +85,12 @@ export function NavUser({ user, role, image }: UserAvatarDropdownProps) {
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user?.name || "Username"}</span>
-                <span className="truncate text-xs">{user?.email || "example@gmail.com"}</span>
+                <span className="truncate font-semibold">
+                  {user?.name || "Username"}
+                </span>
+                <span className="truncate text-xs">
+                  {user?.email || "example@gmail.com"}
+                </span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -100,21 +105,29 @@ export function NavUser({ user, role, image }: UserAvatarDropdownProps) {
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage src={image} alt={user?.name} />
-                  <AvatarFallback className="rounded-lg">{getInitials(user?.name) || "CN"}</AvatarFallback>
+                  <AvatarFallback className="rounded-lg">
+                    {getInitials(user?.name) || "CN"}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user?.name || "Username"}</span>
-                  <span className="truncate text-xs">{user?.email || "example@gmail.com"}</span>
+                  <span className="truncate font-semibold">
+                    {user?.name || "Username"}
+                  </span>
+                  <span className="truncate text-xs">
+                    {user?.email || "example@gmail.com"}
+                  </span>
                 </div>
                 <ModeToggle />
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Sparkles />
-                Upgrade to Pro
-              </DropdownMenuItem>
+              <Link href={`/${role?.toLowerCase()}/change-password`}>
+                <DropdownMenuItem>
+                  <KeyIcon />
+                  Change Password
+                </DropdownMenuItem>
+              </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => handleLogout()}>

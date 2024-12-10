@@ -54,6 +54,7 @@ export default function VendorOnboardingPage() {
     if (user?.user?.id) {
       updateProduct(0, "vendorId", user?.user?.id);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const updateField = (field: keyof VendorOnboardingData, value: any) => {
