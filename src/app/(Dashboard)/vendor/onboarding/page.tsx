@@ -54,7 +54,7 @@ export default function VendorOnboardingPage() {
     if (user?.user?.id) {
       updateProduct(0, "vendorId", user?.user?.id);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const updateField = (field: keyof VendorOnboardingData, value: any) => {
@@ -153,8 +153,7 @@ export default function VendorOnboardingPage() {
 
   return (
     <div className="mx-auto px-4 py-8 w-full">
-      {
-        createMutation.isPending && <Loading />      }
+      {createMutation.isPending && <Loading />}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -398,22 +397,24 @@ export default function VendorOnboardingPage() {
               </label>
             </div>
 
-            <div className="mt-4">
-              <label className="block text-sm font-medium mb-2">
-                Discount Percentage
-              </label>
-              <input
-                type="number"
-                step="0.01"
-                max="99.99"
-                value={formData.products[0].discount || 0}
-                onChange={(e) =>
-                  updateProduct(0, "discount", parseFloat(e.target.value))
-                }
-                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2"
-                placeholder="Enter discount percentage"
-              />
-            </div>
+            {formData.products[0].isFlashSale && (
+              <div className="mt-4">
+                <label className="block text-sm font-medium mb-2">
+                  Discount Percentage
+                </label>
+                <input
+                  type="number"
+                  step="0.01"
+                  max="99.99"
+                  value={formData.products[0].discount || 0}
+                  onChange={(e) =>
+                    updateProduct(0, "discount", parseFloat(e.target.value))
+                  }
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2"
+                  placeholder="Enter discount percentage"
+                />
+              </div>
+            )}
           </div>
 
           <div className="flex space-x-4">
