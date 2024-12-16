@@ -139,7 +139,7 @@ export default function Signup() {
               transition-all duration-300
               ${
                 selectedRole === "customer"
-                  ? "bg-blue-400 hover:bg-blue-300 text-white"
+                  ? "bg-accent hover:bg-accent/60 text-white"
                   : "border border-gray-300 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-900 dark:text-gray-400"
               }
             `}
@@ -156,7 +156,7 @@ export default function Signup() {
               
               ${
                 selectedRole === "vendor"
-                  ? "bg-blue-400 hover:bg-blue-300 text-white "
+                  ? "bg-accent hover:bg-accent/60 text-white "
                   : "border border-gray-300 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-900 dark:text-gray-400"
               }
             `}
@@ -217,7 +217,7 @@ export default function Signup() {
                   )}
                 </div>
                 {isUploading && (
-                  <div className="text-sm text-blue-500 mt-2">Uploading...</div>
+                  <div className="text-sm text-accent mt-2">Uploading...</div>
                 )}
                 {uploadError && (
                   <div className="text-sm text-red-500 mt-2">
@@ -399,7 +399,7 @@ export default function Signup() {
             Already have an account?{" "}
             <Link
               href="/login"
-              className="text-blue-400 hover:text-blue-300 font-semibold"
+              className="text-accent hover:text-accent/60 font-semibold"
             >
               Login
             </Link>

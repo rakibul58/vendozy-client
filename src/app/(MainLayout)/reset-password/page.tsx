@@ -142,7 +142,7 @@ export default function ResetPassword() {
             Remember your password?{" "}
             <Link
               href="/login"
-              className="text-blue-400 hover:text-blue-300 font-semibold"
+              className="text-accent hover:text-accent/60 font-semibold"
             >
               Back to Login
             </Link>

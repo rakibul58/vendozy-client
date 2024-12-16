@@ -41,7 +41,7 @@ export default function Login() {
         }
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPending, isSuccess, userLoading, user]);
 
   return (
@@ -80,7 +80,12 @@ export default function Login() {
             transition={{ delay: 0.3 }}
             className="mb-4"
           >
-            <VInput label="Email" name="email" type="email" placeholder="Enter your email" />
+            <VInput
+              label="Email"
+              name="email"
+              type="email"
+              placeholder="Enter your email"
+            />
           </motion.div>
 
           <motion.div
@@ -89,7 +94,12 @@ export default function Login() {
             transition={{ delay: 0.4 }}
             className="mb-4"
           >
-            <VInput label="Password" name="password" type="password" placeholder="Enter your password" />
+            <VInput
+              label="Password"
+              name="password"
+              type="password"
+              placeholder="Enter your password"
+            />
           </motion.div>
 
           <motion.div
@@ -115,7 +125,7 @@ export default function Login() {
             <div className="flex justify-end">
               <Link
                 href="/forget-password"
-                className="text-sm text-blue-400 hover:text-blue-300"
+                className="text-sm text-accent hover:text-accent/60"
               >
                 Forgot Password?
               </Link>
@@ -133,7 +143,7 @@ export default function Login() {
             Don&lsquo;t have an account?{" "}
             <Link
               href="/signup"
-              className="text-blue-400 hover:text-blue-300 font-semibold"
+              className="text-accent hover:text-accent/60 font-semibold"
             >
               Sign Up
             </Link>

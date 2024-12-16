@@ -20,7 +20,7 @@ export default function ForgetPassword() {
 
   return (
     <div className="flex items-center justify-center px-4 min-h-[70vh]">
-      {isPending && <Loading/>}
+      {isPending && <Loading />}
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -95,7 +95,7 @@ export default function ForgetPassword() {
             Remember your password?{" "}
             <Link
               href="/login"
-              className="text-blue-400 hover:text-blue-300 font-semibold"
+              className="text-accent hover:text-accent/60 font-semibold"
             >
               Back to Login
             </Link>
