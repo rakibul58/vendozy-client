@@ -29,7 +29,7 @@ const CategoryList: React.FC = () => {
   // Render loading state
   if (isLoading || isFetching) {
     return (
-      <Card className="border-0 py-10 px-4">
+      <Card className="border-0 py-10 px-4 shadow-none">
         <CardHeader>
           <CardTitle>Loading Categories...</CardTitle>
         </CardHeader>
@@ -49,7 +49,7 @@ const CategoryList: React.FC = () => {
   // Render error state
   if (error) {
     return (
-      <Card className="border-0 py-10 px-4">
+      <Card className="border-0 py-10 px-4 shadow-none">
         <CardHeader>
           <CardTitle>Error Loading Categories</CardTitle>
         </CardHeader>
@@ -61,7 +61,7 @@ const CategoryList: React.FC = () => {
   }
 
   return (
-    <Card className="border-0 py-10 px-4">
+    <Card className="border-0 py-10 px-4 shadow-none">
       <CardHeader>
         <CardTitle className="flex justify-between items-center">
           Browse Categories
