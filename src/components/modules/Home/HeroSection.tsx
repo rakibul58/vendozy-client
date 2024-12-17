@@ -12,6 +12,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import Link from "next/link";
 
 const categories = [
   {
@@ -111,16 +112,19 @@ const HeroSection = () => {
           </div>
 
           <div className="flex justify-center md:justify-start">
-            <Button
-              variant="default"
-              className="group flex items-center space-x-2"
-            >
-              Explore All Vendors
-              <ChevronRight
-                className="ml-2 transition-transform group-hover:translate-x-1"
-                size={20}
-              />
-            </Button>
+            <Link href={"/products"}>
+              {" "}
+              <Button
+                variant="default"
+                className="group flex items-center space-x-2"
+              >
+                Explore All Products
+                <ChevronRight
+                  className="ml-2 transition-transform group-hover:translate-x-1"
+                  size={20}
+                />
+              </Button>
+            </Link>
           </div>
         </motion.div>
 
@@ -172,13 +176,21 @@ const HeroSection = () => {
                         border border-border max-w-md w-[90%] md:w-full z-[100]"
           >
             <div className="text-center flex-1">
-              <p className="text-2xl md:text-3xl font-bold text-primary">1,200+</p>
-              <p className="text-xs md:text-sm text-muted-foreground">Vendors</p>
+              <p className="text-2xl md:text-3xl font-bold text-primary">
+                1,200+
+              </p>
+              <p className="text-xs md:text-sm text-muted-foreground">
+                Vendors
+              </p>
             </div>
             <div className="h-6 md:h-8 w-px bg-border"></div>
             <div className="text-center flex-1">
-              <p className="text-2xl md:text-3xl font-bold text-accent">50,000+</p>
-              <p className="text-xs md:text-sm text-muted-foreground">Products</p>
+              <p className="text-2xl md:text-3xl font-bold text-accent">
+                50,000+
+              </p>
+              <p className="text-xs md:text-sm text-muted-foreground">
+                Products
+              </p>
             </div>
           </motion.div>
         </motion.div>

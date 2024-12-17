@@ -51,6 +51,7 @@ interface Product {
     name: string;
   };
   images: string[];
+  averageRating: number;
   vendor: {
     name: string;
   };
@@ -159,6 +160,7 @@ const ProductListing: React.FC = () => {
   const comparisonColumns = [
     { key: "name", label: "Product Name" },
     { key: "price", label: "Price" },
+    { key: "averageRating", label: "Rating" },
     { key: "category.name", label: "Category" },
     { key: "vendor.name", label: "Vendor" },
   ];
@@ -257,12 +259,12 @@ const ProductListing: React.FC = () => {
                 type: "spring",
                 stiffness: 300,
               }}
-              className="relative group"
+              className="relative group rounded-md"
             >
-              <Card className="overflow-hidden transition-all duration-300">
+              <Card className="overflow-hidden transition-all duration-300 h-full">
                 <CardContent className="p-4 relative">
                   {/* Hover Action Buttons */}
-                  <div className="absolute top-2 right-2 z-10 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute top-2 right-2 z-10 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ">
                     <Button
                       size="icon"
                       variant="outline"
@@ -282,7 +284,7 @@ const ProductListing: React.FC = () => {
                   </div>
 
                   <Image
-                    src={product?.images[0] || "/placeholder-image.png"}
+                    src={product?.images[0] || "https://res.cloudinary.com/dk4zufod5/image/upload/v1724772905/kd9sy8amvzaky9popnfs.jpg"}
                     alt={product?.name}
                     height={200}
                     width={200}
@@ -395,7 +397,7 @@ const ProductListing: React.FC = () => {
                   {comparedProducts.map((product) => (
                     <td key={product.id} className="p-3 text-center">
                       <Image
-                        src={product?.images[0] || "/placeholder-image.png"}
+                        src={product?.images[0] || "https://res.cloudinary.com/dk4zufod5/image/upload/v1724772905/kd9sy8amvzaky9popnfs.jpg"}
                         alt={product.name}
                         width={150}
                         height={150}

@@ -36,3 +36,12 @@ export const getAllProducts = async (options?: {
     );
   }
 };
+
+export const getProductById = async (id: string) => {
+  try {
+    const { data } = await axiosInstance.get(`/products/${id}`);
+    return data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || "Failed to fetch product");
+  }
+};
