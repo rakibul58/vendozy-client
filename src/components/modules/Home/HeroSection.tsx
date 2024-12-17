@@ -169,7 +169,7 @@ const HeroSection = () => {
             className="md:absolute -bottom-6 left-1/5 transform -translate-x-1/2 
                         bg-card/90 backdrop-blur-sm shadow-lg rounded-xl 
                         px-4 py-3 md:px-6 md:py-4 flex space-x-4 md:space-x-8 items-center 
-                        border border-border max-w-md w-[90%] md:w-full z-[10000]"
+                        border border-border max-w-md w-[90%] md:w-full z-[100]"
           >
             <div className="text-center flex-1">
               <p className="text-2xl md:text-3xl font-bold text-primary">1,200+</p>

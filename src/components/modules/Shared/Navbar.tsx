@@ -51,7 +51,7 @@ const Navbar = () => {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="sticky top-0 z-50 bg-background"
+      className="sticky top-0 z-[1000] bg-background"
     >
       {isNavigateLoading && <Loading />}
       <header className="flex items-center justify-between px-4 py-3 md:px-8">

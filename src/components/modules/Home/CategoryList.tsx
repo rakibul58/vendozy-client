@@ -15,10 +15,13 @@ import {
 import { motion } from "motion/react";
 import Image from "next/image";
 import { useCategoryList } from "@/hooks/category.hook";
+import CategoryListing from "@/components/Skeletons/CategoryListing";
 
 const CategoryList: React.FC = () => {
   const router = useRouter();
-  const { data, error, isLoading, isFetching } = useCategoryList({ limit: 100 });
+  const { data, error, isLoading, isFetching } = useCategoryList({
+    limit: 100,
+  });
 
   // Handle category selection
   const handleCategorySelect = (categoryName: string) => {
@@ -28,22 +31,7 @@ const CategoryList: React.FC = () => {
 
   // Render loading state
   if (isLoading || isFetching) {
-    return (
-      <Card className="border-0 py-10 px-4 shadow-none">
-        <CardHeader>
-          <CardTitle>Loading Categories...</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div
-            className="grid gap-4 animate-pulse"
-          >
-            {[1].map((_, index) => (
-              <div key={index} className="bg-foreground rounded-lg h-36 w-48" />
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-    );
+    return <CategoryListing />;
   }
 
   // Render error state
