@@ -7,10 +7,10 @@ import {
   Package, 
   ShoppingCart, 
   Users, 
-  Settings, 
   Home, 
   BarChart, 
-  LucideIcon 
+  LucideIcon, 
+  View
 } from "lucide-react";
 import Link from "next/link";
 
@@ -69,9 +69,9 @@ const customerRoutes: RouteItem[] = [
     label: "My Orders"
   },
   {
-    href: "/customer/profile",
-    icon: Settings,
-    label: "Profile Settings"
+    href: "/customer/recent-view",
+    icon: View,
+    label: "Recent Views"
   }
 ];
 

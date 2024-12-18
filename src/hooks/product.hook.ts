@@ -1,4 +1,8 @@
-import { getAllProducts, getProductById } from "@/services/ProductServices";
+import {
+  getAllProducts,
+  getProductById,
+  getRecentViewProducts,
+} from "@/services/ProductServices";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 
 export const useProductList = (options: {
@@ -25,6 +29,13 @@ export const useProductList = (options: {
       return currentPage < totalPages ? currentPage + 1 : undefined;
     },
     initialPageParam: 1, // Define the starting page
+  });
+};
+
+export const useGetRecentViewProducts = () => {
+  return useQuery({
+    queryKey: ["categories"],
+    queryFn: () => getRecentViewProducts(),
   });
 };
 

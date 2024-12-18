@@ -11,7 +11,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
-import { LogOut, LayoutDashboard } from "lucide-react";
+import { LogOut, LayoutDashboard, View } from "lucide-react";
+import Link from "next/link";
 
 interface UserAvatarDropdownProps {
   user: {
@@ -71,6 +72,18 @@ export const UserAvatarDropdown: React.FC<UserAvatarDropdownProps> = ({
           <LayoutDashboard className="mr-2 h-4 w-4" />
           <span>Dashboard</span>
         </DropdownMenuItem>
+        {role === "CUSTOMER" && (
+          <Link href={"/customer/recent-view"}>
+            {" "}
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onSelect={handleDashboardNavigation}
+            >
+              <View className="mr-4 h-4 w-4" />
+              <span>Recent Views</span>
+            </DropdownMenuItem>
+          </Link>
+        )}
         <DropdownMenuItem
           className="cursor-pointer text-destructive focus:bg-destructive/10"
           onSelect={onLogout}

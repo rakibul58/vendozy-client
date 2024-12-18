@@ -43,7 +43,6 @@ const Navbar = () => {
   const menuItems = [
     { href: "/", label: "Home" },
     { href: "/products", label: "Products" },
-    { href: "/about", label: "About" },
   ];
 
   return (
