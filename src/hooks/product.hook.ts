@@ -14,6 +14,7 @@ export const useProductList = (options: {
   maxPrice?: number;
   minPrice?: number;
   isFlashSale?: string;
+  vendor?: string
 }) => {
   return useInfiniteQuery({
     queryKey: ["products", options],
@@ -34,14 +35,14 @@ export const useProductList = (options: {
 
 export const useGetRecentViewProducts = () => {
   return useQuery({
-    queryKey: ["categories"],
+    queryKey: ["products"],
     queryFn: () => getRecentViewProducts(),
   });
 };
 
 export const useProductDetail = (id: string) => {
   return useQuery({
-    queryKey: ["category", id],
+    queryKey: ["products", id],
     queryFn: () => getProductById(id),
     enabled: !!id,
   });

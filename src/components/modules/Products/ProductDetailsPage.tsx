@@ -33,7 +33,7 @@ interface Product {
 export default function ProductDetailsPage({
   data,
 }: {
-  data: { product: Product; relatedProducts: Product[] };
+  data: { product: Product; relatedProducts: Product[]; reviewCount: number };
 }) {
   const router = useRouter();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -157,8 +157,7 @@ export default function ProductDetailsPage({
                 ))}
               </div>
               <span className="ml-2 text-muted-foreground">
-                {data?.product?.averageRating} (
-                {data?.product?.averageRating} reviews)
+                {data?.product?.averageRating} ({data?.reviewCount} reviews)
               </span>
             </div>
           </div>
@@ -187,7 +186,7 @@ export default function ProductDetailsPage({
           <div>
             <h3 className="text-xl font-semibold mb-2">Vendor Information</h3>
             <Link
-              href={`/vendor/${data?.product?.vendor.id}`}
+              href={`/shop/${data?.product?.vendor.id}`}
               className="text-primary hover:underline"
             >
               {data?.product?.vendor.name}

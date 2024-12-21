@@ -27,6 +27,7 @@ import { logout } from "@/services/AuthServices";
 import Loading from "./LoadingBlur";
 import { ModeToggle } from "@/components/ModeToggle";
 import Link from "next/link";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface UserAvatarDropdownProps {
   user: {
@@ -44,9 +45,11 @@ export function NavUser({ user, role, image }: UserAvatarDropdownProps) {
   const pathname = usePathname();
   const { setIsLoading: userLoading } = useUser();
   const [isNavigateLoading, setIsNavigateLoading] = useState(false);
+  const queryClient = useQueryClient();
 
   const handleLogout = async () => {
     setIsNavigateLoading(true);
+    queryClient.invalidateQueries({ queryKey: ["products"] });
     logout();
     userLoading(true);
 

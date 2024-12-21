@@ -18,10 +18,13 @@ import {
 import { toast } from "sonner";
 
 export const useUserLogin = () => {
+  const queryClient = useQueryClient();
+
   return useMutation<any, Error, FieldValues>({
     mutationKey: ["USER_LOGIN"],
     mutationFn: async (userData) => await loginUser(userData),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
       toast.success("User login successful.");
     },
     onError: (error) => {

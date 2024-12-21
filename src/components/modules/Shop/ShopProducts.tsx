@@ -39,6 +39,7 @@ interface IProductParams {
   maxPrice?: number;
   minPrice?: number;
   isFlashSale?: string;
+  vendor?: string;
 }
 
 interface Product {
@@ -58,7 +59,7 @@ interface Product {
   [key: string]: any;
 }
 
-const ProductListing: React.FC = () => {
+const ShopProducts = ({ vendor }: { vendor: string }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -75,6 +76,7 @@ const ProductListing: React.FC = () => {
     sortBy: searchParams.get("sortBy") || "createdAt",
     sortOrder: (searchParams.get("sortOrder") as "asc" | "desc") || "desc",
     isFlashSale: searchParams.get("isFlashSale") || "",
+    vendor: vendor,
   });
 
   const [showScrollToTop, setShowScrollToTop] = useState(false);
@@ -500,4 +502,4 @@ const ProductListing: React.FC = () => {
   );
 };
 
-export default ProductListing;
+export default ShopProducts;

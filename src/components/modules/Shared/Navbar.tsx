@@ -19,6 +19,7 @@ import { logout } from "@/services/AuthServices";
 import Loading from "./LoadingBlur";
 import { protectedRoutes } from "@/constants";
 import UserAvatarDropdown from "./UserAvatarDropdown";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,9 +27,11 @@ const Navbar = () => {
   const pathname = usePathname();
   const { user, setIsLoading: userLoading } = useUser();
   const [isNavigateLoading, setIsNavigateLoading] = useState(false);
+  const queryClient = useQueryClient();
 
   const handleLogout = async () => {
     setIsNavigateLoading(true);
+    queryClient.invalidateQueries({ queryKey: ["products"] });
     logout();
     userLoading(true);
 

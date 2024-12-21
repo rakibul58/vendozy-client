@@ -13,6 +13,7 @@ export const getAllProducts = async (options?: {
   maxPrice?: number;
   minPrice?: number;
   isFlashSale?: string;
+  vendor?: string;
 }) => {
   try {
     // console.log({options});
@@ -27,6 +28,7 @@ export const getAllProducts = async (options?: {
         maxPrice: options?.maxPrice,
         minPrice: options?.minPrice,
         isFlashSale: options?.isFlashSale,
+        vendor: options?.vendor || '',
       },
     });
     return data;
