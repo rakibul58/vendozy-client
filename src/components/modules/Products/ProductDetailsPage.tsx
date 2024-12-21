@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import { useUser } from "@/context/user.provider";
 
 interface Product {
   id: string;
@@ -37,6 +38,7 @@ export default function ProductDetailsPage({
 }) {
   const router = useRouter();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const { user } = useUser();
 
   const handleProductDetails = (product: Product) => {
     router.push(`/products/${product.id}`);
@@ -173,6 +175,7 @@ export default function ProductDetailsPage({
               size="lg"
               className="w-full sm:flex-1"
               onClick={handleAddToCart}
+              disabled={user?.role !== "CUSTOMER"}
             >
               <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
             </Button>

@@ -28,6 +28,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { useUser } from "@/context/user.provider";
 
 interface IProductParams {
   page?: number;
@@ -61,6 +62,7 @@ interface Product {
 const ProductListing: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const {user} = useUser()
 
   const [filters, setFilters] = useState<IProductParams>({
     limit: 8,
@@ -291,6 +293,7 @@ const ProductListing: React.FC = () => {
                       size="icon"
                       onClick={() => handleAddToCart(product.id)}
                       className="bg-primary/80 hover:bg-primary"
+                      disabled={user?.role !== "CUSTOMER"}
                     >
                       <ShoppingCart className="h-4 w-4" />
                     </Button>
