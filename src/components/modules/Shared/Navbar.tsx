@@ -20,6 +20,7 @@ import Loading from "./LoadingBlur";
 import { protectedRoutes } from "@/constants";
 import UserAvatarDropdown from "./UserAvatarDropdown";
 import { useQueryClient } from "@tanstack/react-query";
+import { useCartStore } from "@/store/cart.store";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,6 +29,8 @@ const Navbar = () => {
   const { user, setIsLoading: userLoading } = useUser();
   const [isNavigateLoading, setIsNavigateLoading] = useState(false);
   const queryClient = useQueryClient();
+  const { isOpen: cartModalIsOpen, setIsOpen: cartModalSetIsOpen } =
+    useCartStore();
 
   const handleLogout = async () => {
     setIsNavigateLoading(true);
@@ -107,11 +110,14 @@ const Navbar = () => {
         {/* Theme Toggle & Additional Icons */}
         <div className="flex items-center gap-4">
           {user?.role === "CUSTOMER" && (
-            <Link href="/cart">
-              <Button variant="outline" size="icon" className="rounded-full">
-                <ShoppingCart className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all" />
-              </Button>
-            </Link>
+            <Button
+              onClick={() => cartModalSetIsOpen(!cartModalIsOpen)}
+              variant="outline"
+              size="icon"
+              className="rounded-full"
+            >
+              <ShoppingCart className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all" />
+            </Button>
           )}
           <ModeToggle />
           {user ? (

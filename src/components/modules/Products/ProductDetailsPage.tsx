@@ -4,20 +4,14 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import {
-  Star,
-  ShoppingCart,
-  Eye,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { Star, Eye, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { Badge } from "@/components/ui/badge";
-import { toast } from "sonner";
 import { useUser } from "@/context/user.provider";
+import { AddToCartButton } from "@/components/Cart/AddToCartButton";
 
 interface Product {
   id: string;
@@ -29,6 +23,7 @@ interface Product {
   category: { name: string };
   averageRating: number;
   isFlashSale?: boolean;
+  vendorId: string;
 }
 
 export default function ProductDetailsPage({
@@ -42,13 +37,6 @@ export default function ProductDetailsPage({
 
   const handleProductDetails = (product: Product) => {
     router.push(`/products/${product.id}`);
-  };
-
-  const handleAddToCart = () => {
-    toast.success("Product added to cart!", {
-      description: `${data?.product?.name} has been added to your cart.`,
-      position: "top-right",
-    });
   };
 
   const handleImageChange = (index: number) => {
@@ -171,14 +159,12 @@ export default function ProductDetailsPage({
           <p className="text-muted-foreground">{data?.product?.description}</p>
 
           <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-            <Button
+            <AddToCartButton
+              product={data?.product}
               size="lg"
               className="w-full sm:flex-1"
-              onClick={handleAddToCart}
               disabled={user?.role !== "CUSTOMER"}
-            >
-              <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
-            </Button>
+            />
             <Button variant="outline" size="lg" className="w-full sm:flex-1">
               Buy Now
             </Button>

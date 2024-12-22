@@ -105,7 +105,7 @@ export default function VendorOnboardingPage() {
 
     try {
       // Validate entire form
-      console.log(formData, user);
+      // console.log(formData, user);
       VendorValidations.vendorOnboardingSchema.parse(formData);
 
       const submitData = {

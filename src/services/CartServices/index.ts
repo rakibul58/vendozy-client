@@ -7,16 +7,19 @@ import { FieldValues } from "react-hook-form";
 export const addToCart = async (cartData: FieldValues) => {
   try {
     const { data } = await axiosInstance.post("/carts", cartData);
+    // console.log({ data });
     return data;
   } catch (error: any) {
-    throw new Error(error.response?.data?.message || "Failed to add to cart");
+    // console.log({error: error.response?.data});
+    // if (error.response?.data?.error?.code != "504")
+      throw new Error(error.response?.data?.message || "Failed to add to cart");
   }
 };
 
 export const getCart = async () => {
   try {
     const { data } = await axiosInstance.get(`/carts`);
-    return data;
+    return data?.data;
   } catch (error: any) {
     throw new Error(error.response?.data?.message || "Failed to fetch cart");
   }
@@ -36,8 +39,10 @@ export const removeFromCart = async (cartItemId: string) => {
     const { data } = await axiosInstance.delete(
       `/carts/cartItem/${cartItemId}`
     );
+    // console.log({ data });
     return data;
   } catch (error: any) {
+    // console.log({ error });
     throw new Error(
       error.response?.data?.message || "Failed to remove from cart"
     );

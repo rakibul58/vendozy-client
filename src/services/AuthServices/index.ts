@@ -114,7 +114,7 @@ export const forgetPassword = async (payload: FieldValues) => {
 
 export const resetPassword = async (payload: FieldValues) => {
   try {
-    console.log({ payload });
+    // console.log({ payload });
     const { data } = await axios.post(
       `${envConfig.baseApi}/auth/reset-password`,
       payload.data,
@@ -124,10 +124,10 @@ export const resetPassword = async (payload: FieldValues) => {
         },
       }
     );
-    console.log({ data });
+    // console.log({ data });
     return data;
   } catch (error: any) {
-    console.log({ error });
+    // console.log({ error });
     throw new Error(error.response);
   }
 };

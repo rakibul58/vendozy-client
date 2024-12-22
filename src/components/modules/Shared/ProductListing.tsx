@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ChevronUp, Eye, Columns, X, ShoppingCart } from "lucide-react";
+import { ChevronUp, Eye, Columns, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useProductList } from "@/hooks/product.hook";
 import { useCategoryList } from "@/hooks/category.hook";
@@ -29,6 +29,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { useUser } from "@/context/user.provider";
+import { AddToCartButton } from "@/components/Cart/AddToCartButton";
 
 interface IProductParams {
   page?: number;
@@ -62,7 +63,7 @@ interface Product {
 const ProductListing: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const {user} = useUser()
+  const { user } = useUser();
 
   const [filters, setFilters] = useState<IProductParams>({
     limit: 8,
@@ -166,12 +167,6 @@ const ProductListing: React.FC = () => {
     { key: "category.name", label: "Category" },
     { key: "vendor.name", label: "Vendor" },
   ];
-
-  const handleAddToCart = (productId: string) => {
-    // Implement add to cart logic
-    console.log(productId);
-    toast.success("Product added to cart");
-  };
 
   return (
     <div className="pb-10">
@@ -289,14 +284,13 @@ const ProductListing: React.FC = () => {
                     >
                       <Eye className="h-4 w-4" />
                     </Button>
-                    <Button
+                    <AddToCartButton
+                      product={product}
                       size="icon"
-                      onClick={() => handleAddToCart(product.id)}
                       className="bg-primary/80 hover:bg-primary"
                       disabled={user?.role !== "CUSTOMER"}
-                    >
-                      <ShoppingCart className="h-4 w-4" />
-                    </Button>
+                      iconOnly
+                    />
                   </div>
 
                   <Image
