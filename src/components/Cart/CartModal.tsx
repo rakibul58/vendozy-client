@@ -16,6 +16,7 @@ import { AnimatePresence } from "motion/react";
 import { CartItem } from "./CartItem";
 import { useCartStore } from "@/store/cart.store";
 import { useCart, useClearCart } from "@/hooks/cart.hook";
+import CartItemSkeleton from "../Skeletons/CartItem";
 
 export const CartModal = () => {
   const { isOpen, setIsOpen } = useCartStore();
@@ -34,9 +35,7 @@ export const CartModal = () => {
         <div className="mt-8 flex flex-col h-[calc(100vh-12rem)]">
           <div className="flex-1 overflow-y-auto">
             {isPending || isFetching || clearCartPending ? (
-              <div className="flex items-center justify-center h-full">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
-              </div>
+              <CartItemSkeleton />
             ) : cart?.items?.length ? (
               <AnimatePresence>
                 {cart.items.map((item: CartItemType) => (
@@ -63,6 +62,7 @@ export const CartModal = () => {
                 <Button
                   className="w-full"
                   size="lg"
+                  variant="outline"
                   onClick={() => clearCart()}
                 >
                   Clear

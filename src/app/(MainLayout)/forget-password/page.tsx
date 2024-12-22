@@ -91,7 +91,7 @@ export default function ForgetPassword() {
           transition={{ delay: 0.6 }}
           className="text-center mt-6"
         >
-          <p className="text-gray-600">
+          <p className="">
             Remember your password?{" "}
             <Link
               href="/login"

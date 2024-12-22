@@ -3,7 +3,7 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import { Button } from "../ui/button";
 import { Minus, Plus, Trash2 } from "lucide-react";
-import Loading from "../modules/Shared/LoadingBlur";
+import CartItemSkeleton from "../Skeletons/CartItem";
 
 interface CartItemProps {
   item: {
@@ -29,6 +29,8 @@ export const CartItem = ({ item }: CartItemProps) => {
     });
   };
 
+  if (updatePending || removePending) return <CartItemSkeleton />;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -36,7 +38,6 @@ export const CartItem = ({ item }: CartItemProps) => {
       exit={{ opacity: 0, y: -20 }}
       className="flex items-center gap-4 p-4 border-b"
     >
-      {(updatePending || removePending) && <Loading />}
       <Image
         src={item.product.images[0] || "/api/placeholder/80/80"}
         alt={item.product.name}
@@ -54,7 +55,7 @@ export const CartItem = ({ item }: CartItemProps) => {
         <Button
           variant="outline"
           size="icon"
-          onClick={() => handleQuantityChange(-1)}
+          onClick={() => handleQuantityChange(Number(item.quantity) - 1)}
           disabled={updatePending}
         >
           <Minus className="h-4 w-4" />
@@ -63,7 +64,7 @@ export const CartItem = ({ item }: CartItemProps) => {
         <Button
           variant="outline"
           size="icon"
-          onClick={() => handleQuantityChange(1)}
+          onClick={() => handleQuantityChange(Number(item.quantity) + 1)}
           disabled={updatePending}
         >
           <Plus className="h-4 w-4" />
