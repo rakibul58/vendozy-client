@@ -11,6 +11,7 @@ interface CartItemProps {
     product: {
       images: string[];
       name: string;
+      discount: string;
     };
     price: number;
     quantity: number;
@@ -22,12 +23,21 @@ export const CartItem = ({ item }: CartItemProps) => {
   const { mutate: removeFromCart, isPending: removePending } =
     useRemoveFromCart();
 
+  console.log({ item });
+
   const handleQuantityChange = (newQuantity: number) => {
     updateCart({
       cartItemId: item.id,
       cartData: { quantity: newQuantity },
     });
   };
+
+  // Calculate discount and savings
+  const discountPercent = parseFloat(item.product.discount) || 0;
+  const originalPrice = Number(item.price);
+  const discountedPrice = originalPrice * (1 - discountPercent / 100);
+  const savings = originalPrice - discountedPrice;
+  const totalSavings = savings * item.quantity;
 
   if (updatePending || removePending) return <CartItemSkeleton />;
 
@@ -47,9 +57,41 @@ export const CartItem = ({ item }: CartItemProps) => {
       />
       <div className="flex-1">
         <h3 className="font-medium">{item.product.name}</h3>
-        <p className="text-sm">
-          ${item.price.toString()} x {item.quantity}
-        </p>
+        <div className="space-y-1">
+          {discountPercent > 0 ? (
+            <>
+              <p className="text-sm text-gray-600">
+                <span className="line-through">
+                  ${originalPrice.toFixed(2)}
+                </span>
+                <span className="ml-2 text-green-600">
+                  ${discountedPrice.toFixed(2)}
+                </span>
+                <span className="ml-2 text-red-500">-{discountPercent}%</span>
+              </p>
+              <p className="text-sm">
+                Total: ${(discountedPrice * item.quantity).toFixed(2)}
+                {item.quantity > 1 && (
+                  <span className="text-gray-500 ml-2">
+                    (${discountedPrice.toFixed(2)} x {item.quantity})
+                  </span>
+                )}
+              </p>
+              <p className="text-sm text-green-600">
+                You save: ${totalSavings.toFixed(2)}
+              </p>
+            </>
+          ) : (
+            <p className="text-sm">
+              ${originalPrice.toFixed(2)} x {item.quantity}
+              {item.quantity > 1 && (
+                <span className="ml-2">
+                  = ${(originalPrice * item.quantity).toFixed(2)}
+                </span>
+              )}
+            </p>
+          )}
+        </div>
       </div>
       <div className="flex items-center gap-2">
         <Button
