@@ -23,7 +23,7 @@ export const CartItem = ({ item }: CartItemProps) => {
   const { mutate: removeFromCart, isPending: removePending } =
     useRemoveFromCart();
 
-  console.log({ item });
+  // console.log({ item });
 
   const handleQuantityChange = (newQuantity: number) => {
     updateCart({

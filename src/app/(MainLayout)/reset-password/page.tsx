@@ -25,7 +25,7 @@ export default function ResetPassword() {
   // Extract token from URL
   const token = searchParams.get("token");
 
-  console.log({ token });
+  // console.log({ token });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     // Include the token with the new password

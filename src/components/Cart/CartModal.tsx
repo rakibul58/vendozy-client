@@ -6,6 +6,7 @@ interface CartItemType {
   product: {
     images: string[];
     name: string;
+    discount: string;
   };
   price: number;
   quantity: number;
@@ -17,6 +18,7 @@ import { CartItem } from "./CartItem";
 import { useCartStore } from "@/store/cart.store";
 import { useCart, useClearCart } from "@/hooks/cart.hook";
 import CartItemSkeleton from "../Skeletons/CartItem";
+import Link from "next/link";
 
 export const CartModal = () => {
   const { isOpen, setIsOpen } = useCartStore();
@@ -56,9 +58,12 @@ export const CartModal = () => {
                 <span className="font-medium">${cart.total.toString()}</span>
               </div>
               <div className="flex justify-between mb-4 gap-4">
-                <Button className="w-full" size="lg">
-                  Checkout
-                </Button>
+                <Link className="w-full" href={'/checkout'}>
+                  <Button className="w-full" size="lg">
+                    Checkout
+                  </Button>
+                </Link>
+
                 <Button
                   className="w-full"
                   size="lg"

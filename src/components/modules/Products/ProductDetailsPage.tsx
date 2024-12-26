@@ -165,9 +165,6 @@ export default function ProductDetailsPage({
               className="w-full sm:flex-1"
               disabled={user?.role !== "CUSTOMER"}
             />
-            <Button variant="outline" size="lg" className="w-full sm:flex-1">
-              Buy Now
-            </Button>
           </div>
 
           <Separator />
