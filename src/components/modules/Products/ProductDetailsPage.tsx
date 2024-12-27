@@ -12,6 +12,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Badge } from "@/components/ui/badge";
 import { useUser } from "@/context/user.provider";
 import { AddToCartButton } from "@/components/Cart/AddToCartButton";
+import ProductReviews, { ReviewType } from "./ProductReviews";
 
 interface Product {
   id: string;
@@ -24,6 +25,7 @@ interface Product {
   averageRating: number;
   isFlashSale?: boolean;
   vendorId: string;
+  Review: ReviewType[];
 }
 
 export default function ProductDetailsPage({
@@ -34,6 +36,8 @@ export default function ProductDetailsPage({
   const router = useRouter();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { user } = useUser();
+
+  console.log(data);
 
   const handleProductDetails = (product: Product) => {
     router.push(`/products/${product.id}`);
@@ -245,6 +249,10 @@ export default function ProductDetailsPage({
             </motion.div>
           ))}
         </div>
+      </section>
+
+      <section className="mt-12">
+        <ProductReviews reviews={data?.product?.Review || []} />
       </section>
     </div>
   );

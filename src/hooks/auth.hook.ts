@@ -14,6 +14,7 @@ import {
   registerCustomer,
   registerVendor,
   resetPassword,
+  updateCustomer,
 } from "@/services/AuthServices";
 import { toast } from "sonner";
 
@@ -94,6 +95,19 @@ export const useUserChangePassword = () => {
     },
     onError: (error) => {
       toast.error("Provide correct password.");
+    },
+  });
+};
+
+export const useUpdateCustomer = () => {
+  return useMutation<any, Error, FieldValues>({
+    mutationKey: ["UPDATE_PASSWORD"],
+    mutationFn: async (payload) => await updateCustomer(payload),
+    onSuccess: () => {
+      toast.success("Customer Updated successfully.");
+    },
+    onError: (error) => {
+      toast.error("Failed to Update Customer.");
     },
   });
 };

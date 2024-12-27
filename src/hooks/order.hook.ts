@@ -1,8 +1,14 @@
 import { useState } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { getAllCoupons, initiatePayment } from "@/services/OrderServices";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  addReview,
+  getAllCoupons,
+  getAllCustomerOrders,
+  initiatePayment,
+} from "@/services/OrderServices";
 import { getCart } from "@/services/CartServices";
 import { Coupon } from "@/components/modules/Products/AvailableCoupons";
+import { toast } from "sonner";
 
 export interface CheckoutTotals {
   subtotal: number;
@@ -18,6 +24,13 @@ interface CouponOptions {
   sortOrder?: "asc" | "desc";
   validNow?: boolean;
   isActive?: boolean;
+}
+interface options {
+  page?: number;
+  limit?: number;
+  searchTerm?: string;
+  sortBy?: string;
+  sortOrder?: "asc" | "desc";
 }
 
 export interface Product {
@@ -46,6 +59,30 @@ export const useAvailableCoupons = (options: CouponOptions) => {
   });
 };
 
+export const useCustomerOrderList = (options: options) => {
+  return useQuery({
+    queryKey: ["orders", options],
+    queryFn: () => getAllCustomerOrders(options),
+  });
+};
+
+export const useAddReviews = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: addReview,
+    onSuccess: (data) => {
+      // Invalidate and refetch categories list
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+      toast.success("Review added successfully");
+      return data;
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || "Failed to add review");
+    },
+  });
+};
+
 export const useCheckoutData = () => {
   return useQuery<CheckoutData>({
     queryKey: ["checkout"],
@@ -70,7 +107,6 @@ export const useCheckoutProcess = () => {
       });
     },
     onSuccess: (data) => {
-
       window.location.href = data?.payment_url;
     },
   });

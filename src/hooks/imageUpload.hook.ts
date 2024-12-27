@@ -51,6 +51,7 @@ export const useImageUpload = () => {
     uploadedImageUrl,
     handleImageChange,
     resetImage,
-    uploadError: mutation.error
+    uploadError: mutation.error,
+    setPreviewUrl
   };
 };

@@ -141,6 +141,18 @@ export const changePassword = async (payload: FieldValues) => {
   }
 };
 
+export const updateCustomer = async (payload: FieldValues) => {
+  try {
+    const { data } = await axiosInstance.put(
+      "/users/update-customer",
+      payload
+    );
+    return data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+
 export const logout = async () => {
   (await cookies()).delete("accessToken");
   (await cookies()).delete("refreshToken");
