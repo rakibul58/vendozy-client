@@ -1,42 +1,45 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-"use client";
+import { ReactNode, useEffect } from "react";
+import { 
+  FieldValues, 
+  useForm, 
+  FormProvider, 
+  SubmitHandler,
+  Resolver,
+  DefaultValues 
+} from "react-hook-form";
 
-import { ReactNode } from "react";
-import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-
-interface formConfig {
-  defaultValues?: Record<string, any>;
-  resolver?: any;
+interface FormConfig<TFieldValues extends FieldValues> {
+  defaultValues?: DefaultValues<TFieldValues>;
+  resolver?: Resolver<TFieldValues>;
 }
 
-interface IProps extends formConfig {
+interface VFormProps<TFieldValues extends FieldValues> extends FormConfig<TFieldValues> {
   children: ReactNode;
-  onSubmit: SubmitHandler<any>;
+  onSubmit: SubmitHandler<TFieldValues>;
 }
 
-export default function VForm({
+function VForm<TFieldValues extends FieldValues = FieldValues>({
   children,
   onSubmit,
   defaultValues,
   resolver,
-}: IProps) {
-  const formConfig: formConfig = {};
+}: VFormProps<TFieldValues>): JSX.Element {
+  const methods = useForm<TFieldValues>({
+    defaultValues: defaultValues as DefaultValues<TFieldValues>,
+    resolver
+  });
 
-  if (!!defaultValues) {
-    formConfig["defaultValues"] = defaultValues;
-  }
-
-  if (!!resolver) {
-    formConfig["resolver"] = resolver;
-  }
-
-  const methods = useForm(formConfig);
-
-  const submitHandler = methods.handleSubmit;
+  useEffect(() => {
+    if (defaultValues) {
+      methods.reset(defaultValues);
+    }
+  }, [defaultValues, methods]);
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={submitHandler(onSubmit)}>{children}</form>
+      <form onSubmit={methods.handleSubmit(onSubmit)}>{children}</form>
     </FormProvider>
   );
 }
+
+export default VForm;

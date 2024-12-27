@@ -153,6 +153,30 @@ export const updateCustomer = async (payload: FieldValues) => {
   }
 };
 
+export const updateVendor = async (payload: FieldValues) => {
+  try {
+    const { data } = await axiosInstance.put(
+      "/users/update-vendor",
+      payload
+    );
+    return data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+
+export const updateAdmin = async (payload: FieldValues) => {
+  try {
+    const { data } = await axiosInstance.put(
+      "/users/update-admin",
+      payload
+    );
+    return data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+
 export const logout = async () => {
   (await cookies()).delete("accessToken");
   (await cookies()).delete("refreshToken");

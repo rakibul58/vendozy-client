@@ -3,28 +3,42 @@
 import Link from "next/link";
 import { motion } from "motion/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FieldValues, SubmitHandler } from "react-hook-form";
 import VForm from "@/components/form/VForm";
 import { Button } from "@/components/ui/button";
 import VInput from "@/components/form/VInput";
 import { AuthValidations } from "@/schemas/auth.validations";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useUserLogin } from "@/hooks/auth.hook";
 import { useUser } from "@/context/user.provider";
 import Loading from "@/components/modules/Shared/LoadingBlur";
+
+interface LoginForm {
+  email: string;
+  password: string;
+}
 
 export default function Login() {
   const { mutate: handleUserLogin, isPending, isSuccess } = useUserLogin();
   const searchParams = useSearchParams();
   const router = useRouter();
   const { user, setIsLoading: userLoading } = useUser();
+  const [formKey, setFormKey] = useState(0);
+  const [defaultValues, setDefaultValues] = useState<LoginForm>({
+    email: "",
+    password: "",
+  });
 
   const redirect = searchParams.get("redirect");
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit = (data: LoginForm) => {
     handleUserLogin(data);
     userLoading(true);
+  };
+
+  const setPresetValues = (values: LoginForm) => {
+    setDefaultValues(values);
+    setFormKey((prev) => prev + 1);
   };
 
   useEffect(() => {
@@ -33,11 +47,11 @@ export default function Login() {
         router.push(redirect);
       } else {
         if (user?.role === "CUSTOMER") {
-          router.push("/customer");
+          router.push("/customer/dashboard");
         } else if (user?.role === "ADMIN") {
-          router.push("/admin");
+          router.push("/admin/dashboard");
         } else {
-          router.push("/vendor");
+          router.push("/vendor/dashboard");
         }
       }
     }
@@ -50,10 +64,7 @@ export default function Login() {
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{
-          duration: 0.4,
-          ease: "easeInOut",
-        }}
+        transition={{ duration: 0.4, ease: "easeInOut" }}
         className="w-full max-w-md space-y-6 rounded-xl border border-gray-200 p-8 shadow-lg dark:border-gray-700 my-auto"
       >
         <motion.div
@@ -66,12 +77,50 @@ export default function Login() {
             Login to Vendozy
           </h3>
           <p className="mt-2 text-gray-600 dark:text-gray-400">
-            Welcome Back! Let&lsquo;s Get Started
+            Welcome Back! Let&apos;s Get Started
           </p>
         </motion.div>
 
+        <div className="border p-3 rounded-lg">
+          <h1 className="mb-2 font-bold">Guest Credentials</h1>
+          <div className="flex flex-wrap gap-4">
+            <Button
+              onClick={() =>
+                setPresetValues({
+                  email: "customer@gmail.com",
+                  password: "12345",
+                })
+              }
+            >
+              Customer
+            </Button>
+            <Button
+              onClick={() =>
+                setPresetValues({
+                  email: "admin@vendozy.com",
+                  password: "12345",
+                })
+              }
+            >
+              Admin
+            </Button>
+            <Button
+              onClick={() =>
+                setPresetValues({
+                  email: "vendor@gmail.com",
+                  password: "12345",
+                })
+              }
+            >
+              Vendor
+            </Button>
+          </div>
+        </div>
+
         <VForm
+          key={formKey}
           resolver={zodResolver(AuthValidations.loginValidationSchema)}
+          defaultValues={defaultValues}
           onSubmit={onSubmit}
         >
           <motion.div
@@ -140,7 +189,7 @@ export default function Login() {
           className="text-center mt-6"
         >
           <p className="">
-            Don&lsquo;t have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link
               href="/signup"
               className="text-accent hover:text-accent/60 font-semibold"

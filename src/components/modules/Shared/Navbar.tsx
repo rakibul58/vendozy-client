@@ -56,7 +56,7 @@ const Navbar = () => {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="sticky top-0 z-[1000] bg-background"
+      className="fixed top-0 w-full z-[100] bg-primary mb-20"
     >
       {isNavigateLoading && <Loading />}
       <header className="flex items-center justify-between px-4 py-3 md:px-8">
@@ -75,7 +75,7 @@ const Navbar = () => {
             <Link
               key={item.href}
               href={item.href}
-              className="text-muted-foreground transition-colors hover:text-foreground font-medium"
+              className="transition-colors hover:text-foreground font-medium"
             >
               {item.label}
             </Link>
@@ -90,7 +90,7 @@ const Navbar = () => {
               <span className="sr-only">Toggle navigation menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="p-4">
+          <SheetContent side="left" className="p-4 z-[105]">
             <SheetTitle></SheetTitle>
             <SheetDescription></SheetDescription>
             <nav className="flex flex-col gap-4">

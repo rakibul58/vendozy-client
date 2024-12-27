@@ -32,9 +32,9 @@ export const UserAvatarDropdown: React.FC<UserAvatarDropdownProps> = ({
 }) => {
   const router = useRouter();
   const handleDashboardNavigation = () => {
-    if (role === "ADMIN") router.push("/admin");
-    else if (role === "VENDOR") router.push("/vendor");
-    else router.push("/customer");
+    if (role === "ADMIN") router.push("/admin/dashboard");
+    else if (role === "VENDOR") router.push("/vendor/dashboard");
+    else router.push("/customer/dashboard");
   };
 
   const getInitials = (name: string) => {

@@ -78,9 +78,9 @@ export default function Signup() {
     // console.log("object 1");
     if (!isPending && isSuccess) {
       if (user?.role === "CUSTOMER") {
-        router.push("/customer");
+        router.push("/customer/dashboard");
       } else {
-        router.push("/vendor");
+        router.push("/vendor/dashboard");
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -90,9 +90,9 @@ export default function Signup() {
     // console.log("object 2");
     if (!vendorIsPending && vendorIsSuccess) {
       if (user?.role === "CUSTOMER") {
-        router.push("/customer");
+        router.push("/customer/dashboard");
       } else {
-        router.push("/vendor");
+        router.push("/vendor/dashboard");
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

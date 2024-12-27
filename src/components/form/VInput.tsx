@@ -13,7 +13,7 @@ export interface IInput {
   name: string;
   disabled?: boolean;
   startContent?: ReactNode;
-  placeholder?: string
+  placeholder?: string;
 }
 
 export default function VInput({
@@ -21,7 +21,7 @@ export default function VInput({
   type = "text",
   label,
   name,
-  placeholder
+  placeholder,
 }: IInput) {
   const {
     register,
