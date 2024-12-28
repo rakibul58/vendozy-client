@@ -7,7 +7,6 @@ import {
   Package,
   ShoppingCart,
   Users,
-  Home,
   BarChart,
   LucideIcon,
   View,
@@ -48,6 +47,11 @@ const adminRoutes: RouteItem[] = [
 
 const vendorRoutes: RouteItem[] = [
   {
+    href: "/vendor/dashboard",
+    icon: LayoutDashboardIcon,
+    label: "Dashboard",
+  },
+  {
     href: "/vendor/products",
     icon: Package,
     label: "My Products",
@@ -56,11 +60,6 @@ const vendorRoutes: RouteItem[] = [
     href: "/vendor/orders",
     icon: ShoppingCart,
     label: "Orders",
-  },
-  {
-    href: "/vendor/dashboard",
-    icon: Home,
-    label: "Vendor Dashboard",
   },
 ];
 

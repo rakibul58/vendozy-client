@@ -1,21 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-"use client"
-import React from "react";
-import { motion } from "motion/react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+
+import { OrderTrendChart } from "@/components/modules/Shared/charts";
 import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-} from "recharts";
+  LoadingSkeleton,
+  OrderStatusBadge,
+  StatsCard,
+} from "@/components/modules/Shared/dashboard";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -24,100 +17,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ShoppingCart, Package, Star, DollarSign } from "lucide-react";
 import { useCustomerDashboard } from "@/hooks/user.hook";
-import { Skeleton } from "@/components/ui/skeleton";
+import { DollarSign, Package, ShoppingCart, Star } from "lucide-react";
+import {
+  CartesianGrid,
+  Cell,
+  Legend,
+  Line,
+  LineChart,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
-interface Activity {
-  id: string;
-  product: {
-    name: string;
-  };
-  type: string;
-  date: string;
-  status: string;
-}
-
-interface OrderStatus {
-  status: string;
-  value: number;
-}
-
-interface IDashboardData {
-  orders: Array<{
-    date: string;
-    amount: number;
-  }>;
-  recentViews: Activity[];
-  analytics: {
-    totalOrders: number;
-    totalSpent: number;
-    totalProductsViewed: number;
-    totalReviews: number;
-  };
-  ordersByStatus: OrderStatus[];
-}
-
-const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042"];
-
-const LoadingSkeleton = () => (
-  <div className="p-6 space-y-6">
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-      {[1, 2, 3, 4].map((i) => (
-        <Card key={i}>
-          <CardContent className="p-6">
-            <Skeleton className="h-24 w-full" />
-          </CardContent>
-        </Card>
-      ))}
-    </div>
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <Card>
-        <CardContent className="p-6">
-          <Skeleton className="h-[300px] w-full" />
-        </CardContent>
-      </Card>
-      <Card>
-        <CardContent className="p-6">
-          <Skeleton className="h-[300px] w-full" />
-        </CardContent>
-      </Card>
-    </div>
-    <Card>
-      <CardContent className="p-6">
-        <Skeleton className="h-[200px] w-full" />
-      </CardContent>
-    </Card>
-  </div>
-);
-
-const StatsCard = ({ 
-  stat, 
-  index 
-}: { 
-  stat: { title: string; value: number | string; icon: JSX.Element; color: string; }; 
-  index: number; 
-}) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ delay: index * 0.1 }}
-  >
-    <Card>
-      <CardContent className="flex items-center p-6">
-        <div className={`rounded-full p-3 ${stat.color} bg-opacity-10`}>
-          {stat.icon}
-        </div>
-        <div className="ml-4">
-          <p className="text-sm font-medium text-gray-500">{stat.title}</p>
-          <h3 className="text-2xl font-bold">{stat.value}</h3>
-        </div>
-      </CardContent>
-    </Card>
-  </motion.div>
-);
-
-const CustomerDashboard = () => {
+export default function CustomerDashboard() {
   const { data: dashboardData, isFetched, isFetching } = useCustomerDashboard();
 
   if (isFetching || !isFetched) {
@@ -126,16 +42,18 @@ const CustomerDashboard = () => {
 
   const statsCards = [
     {
-      title: "Total Orders",
+      title: "Paid Orders",
       value: dashboardData?.analytics?.totalOrders ?? 0,
+      subtitle: "Completed transactions",
       icon: <ShoppingCart className="h-6 w-6" />,
-      color: "text-blue-500",
+      color: "text-green-500",
     },
     {
       title: "Total Spent",
       value: `$${dashboardData?.analytics?.totalSpent ?? "0.00"}`,
+      subtitle: "From paid orders",
       icon: <DollarSign className="h-6 w-6" />,
-      color: "text-green-500",
+      color: "text-blue-500",
     },
     {
       title: "Products Viewed",
@@ -151,6 +69,35 @@ const CustomerDashboard = () => {
     },
   ];
 
+  // Format order trend data
+  interface Order {
+    id: string;
+    date: string;
+    amount: string;
+  }
+
+  interface FormattedOrder extends Omit<Order, "amount"> {
+    amount: string;
+  }
+
+  const formattedOrders: FormattedOrder[] = dashboardData.orders.map(
+    (order: Order) => ({
+      ...order,
+      amount: Number(order.amount).toFixed(2),
+    })
+  );
+
+  // Define RecentView type
+  interface RecentView {
+    id: string;
+    product: {
+      name: string;
+    };
+    type: string;
+    date: string;
+    status: string;
+  }
+
   return (
     <div className="p-6 space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -160,35 +107,11 @@ const CustomerDashboard = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Order Trends</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="h-[300px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={dashboardData.orders}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line 
-                    type="monotone" 
-                    dataKey="amount" 
-                    stroke="#8884d8" 
-                    strokeWidth={2}
-                    dot={{ strokeWidth: 2 }}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </CardContent>
-        </Card>
+        <OrderTrendChart orders={dashboardData?.orders} />
 
         <Card>
           <CardHeader>
-            <CardTitle>Order Status Distribution</CardTitle>
+            <CardTitle>All Orders Status Distribution</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="h-[300px]">
@@ -203,12 +126,20 @@ const CustomerDashboard = () => {
                     outerRadius={80}
                     label
                   >
-                    {dashboardData.ordersByStatus.map((entry: OrderStatus, index: number) => (
-                      <Cell 
-                      key={`cell-${entry.status}`} 
-                      fill={COLORS[index % COLORS.length]} 
-                      />
-                    ))}
+                    {dashboardData.ordersByStatus.map(
+                      (entry: { status: string }, index: number) => (
+                        <Cell
+                          key={`cell-${entry.status}`}
+                          fill={
+                            entry.status === "PAID"
+                              ? "#22c55e"
+                              : entry.status === "PENDING"
+                              ? "#eab308"
+                              : "#ef4444"
+                          }
+                        />
+                      )
+                    )}
                   </Pie>
                   <Tooltip />
                   <Legend />
@@ -234,24 +165,24 @@ const CustomerDashboard = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-                {dashboardData.recentViews.map((activity: Activity) => (
+              {dashboardData.recentViews.map((activity: RecentView) => (
                 <TableRow key={activity.id}>
                   <TableCell className="font-medium">
-                  {activity.product.name}
+                    {activity.product.name}
                   </TableCell>
                   <TableCell>{activity.type}</TableCell>
                   <TableCell>
-                  {new Date(activity.date).toLocaleDateString()}
+                    {new Date(activity.date).toLocaleDateString()}
                   </TableCell>
-                  <TableCell>{activity.status}</TableCell>
+                  <TableCell>
+                    <OrderStatusBadge status={activity.status} />
+                  </TableCell>
                 </TableRow>
-                ))}
+              ))}
             </TableBody>
           </Table>
         </CardContent>
       </Card>
     </div>
   );
-};
-
-export default CustomerDashboard;
+}
