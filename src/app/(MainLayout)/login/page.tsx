@@ -12,6 +12,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useUserLogin } from "@/hooks/auth.hook";
 import { useUser } from "@/context/user.provider";
 import Loading from "@/components/modules/Shared/LoadingBlur";
+import Image from "next/image";
+import loginImg from '../../../../public/login.svg'
 
 interface LoginForm {
   email: string;
@@ -55,150 +57,158 @@ export default function Login() {
         }
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isPending, isSuccess, userLoading, user]);
+  }, [isPending, isSuccess, userLoading, user, redirect, router]);
 
   return (
-    <div className="flex items-center justify-center px-4 min-h-[70vh]">
+    <div className="h-[calc(100vh-7rem)] flex flex-col lg:flex-row gap-8 py-8">
       {isPending && <Loading />}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.4, ease: "easeInOut" }}
-        className="w-full max-w-md space-y-6 rounded-xl border border-gray-200 p-8 shadow-lg dark:border-gray-700 my-auto"
+      
+      {/* Left side - Branding/Image */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="lg:w-1/2 flex items-center justify-center p-6 bg-accent/5 rounded-2xl"
       >
-        <motion.div
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="text-center"
-        >
-          <h3 className="text-3xl font-bold text-gray-800 dark:text-gray-200">
-            Login to Vendozy
-          </h3>
-          <p className="mt-2 text-gray-600 dark:text-gray-400">
-            Welcome Back! Let&apos;s Get Started
-          </p>
-        </motion.div>
-
-        <div className="border p-3 rounded-lg">
-          <h1 className="mb-2 font-bold">Guest Credentials</h1>
-          <div className="flex flex-wrap gap-4">
-            <Button
-              onClick={() =>
-                setPresetValues({
-                  email: "customer@gmail.com",
-                  password: "12345",
-                })
-              }
-            >
-              Customer
-            </Button>
-            <Button
-              onClick={() =>
-                setPresetValues({
-                  email: "admin@vendozy.com",
-                  password: "12345",
-                })
-              }
-            >
-              Admin
-            </Button>
-            <Button
-              onClick={() =>
-                setPresetValues({
-                  email: "vendor@gmail.com",
-                  password: "12345",
-                })
-              }
-            >
-              Vendor
-            </Button>
+        <div className="text-center">
+          <h1 className="text-4xl font-bold mb-6 text-accent">Vendozy Marketplace</h1>
+          <p className="text-xl mb-8 text-gray-600 dark:text-gray-300">Connect with trusted vendors and explore quality products</p>
+          <div className="relative aspect-video w-full max-w-xl mx-auto rounded-xl overflow-hidden shadow-xl">
+            <Image 
+              src={loginImg}
+              alt="Marketplace illustration"
+              className="object-cover w-full h-full"
+              height={100}
+              width={100}
+            />
+          </div>
+          <div className="mt-8 grid grid-cols-3 gap-4 max-w-md mx-auto">
+            <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+              <h3 className="font-bold text-accent">12k+</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Vendors</p>
+            </div>
+            <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+              <h3 className="font-bold text-accent">5k+</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Products</p>
+            </div>
+            <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+              <h3 className="font-bold text-accent">50k+</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Customers</p>
+            </div>
           </div>
         </div>
+      </motion.div>
 
-        <VForm
-          key={formKey}
-          resolver={zodResolver(AuthValidations.loginValidationSchema)}
-          defaultValues={defaultValues}
-          onSubmit={onSubmit}
+      {/* Right side - Login Form */}
+      <div className="lg:w-1/2 flex items-center justify-center p-6">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4 }}
+          className="w-full max-w-md space-y-8"
         >
-          <motion.div
-            initial={{ x: -20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="mb-4"
-          >
-            <VInput
-              label="Email"
-              name="email"
-              type="email"
-              placeholder="Enter your email"
-            />
-          </motion.div>
-
-          <motion.div
-            initial={{ x: 20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="mb-4"
-          >
-            <VInput
-              label="Password"
-              name="password"
-              type="password"
-              placeholder="Enter your password"
-            />
-          </motion.div>
-
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="flex flex-col space-y-4"
-          >
-            <Button
-              className="w-full rounded-md font-semibold group"
-              size="lg"
-              type="submit"
-            >
-              <motion.span
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="inline-block"
+       
+          <div className="bg-gray-50 dark:bg-gray-800/50 p-6 rounded-lg mb-8">
+            <h1 className="text-lg font-bold mb-4">Quick Access Demos</h1>
+            <div className="flex flex-wrap gap-3">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setPresetValues({
+                  email: "customer@gmail.com",
+                  password: "12345",
+                })}
               >
-                {isPending ? "Logging in...." : "Login"}
-              </motion.span>
-            </Button>
+                Customer
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setPresetValues({
+                  email: "admin@vendozy.com",
+                  password: "12345",
+                })}
+              >
+                Admin
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setPresetValues({
+                  email: "vendor@gmail.com",
+                  password: "12345",
+                })}
+              >
+                Vendor
+              </Button>
+            </div>
+          </div>
 
-            <div className="flex justify-end">
+          <VForm
+            key={formKey}
+            resolver={zodResolver(AuthValidations.loginValidationSchema)}
+            defaultValues={defaultValues}
+            onSubmit={onSubmit}
+          >
+            <motion.div
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="mb-6"
+            >
+              <VInput
+                label="Email Address"
+                name="email"
+                type="email"
+                placeholder="Enter your email"
+              />
+            </motion.div>
+
+            <motion.div
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="mb-6"
+            >
+              <VInput
+                label="Password"
+                name="password"
+                type="password"
+                placeholder="Enter your password"
+              />
+            </motion.div>
+
+            <div className="flex items-center justify-end">
               <Link
                 href="/forget-password"
-                className="text-sm text-accent hover:text-accent/60"
+                className="text-sm text-accent hover:text-accent/80 mb-6"
               >
                 Forgot Password?
               </Link>
             </div>
-          </motion.div>
-        </VForm>
 
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.6 }}
-          className="text-center mt-6"
-        >
-          <p className="">
-            Don&apos;t have an account?{" "}
-            <Link
-              href="/signup"
-              className="text-accent hover:text-accent/60 font-semibold"
+            <Button
+              className="w-full py-6 text-lg font-semibold"
+              size="lg"
+              type="submit"
             >
-              Sign Up
-            </Link>
-          </p>
+              {isPending ? "Signing in..." : "Sign In"}
+            </Button>
+          </VForm>
+
+          <div className="text-center pt-6 border-t">
+            <p className="text-gray-600 dark:text-gray-400">
+              Don&apos;t have an account?{" "}
+              <Link
+                href="/signup"
+                className="text-accent hover:text-accent/80 font-semibold"
+              >
+                Create Account
+              </Link>
+            </p>
+          </div>
         </motion.div>
-      </motion.div>
+      </div>
     </div>
   );
 }

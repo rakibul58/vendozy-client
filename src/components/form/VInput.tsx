@@ -22,6 +22,7 @@ export default function VInput({
   label,
   name,
   placeholder,
+  disabled = false
 }: IInput) {
   const {
     register,
@@ -44,6 +45,7 @@ export default function VInput({
         aria-describedby={errors[name] ? `${name}-error` : undefined}
         className="w-full py-5"
         placeholder={placeholder}
+        disabled={disabled}
       />
 
       {errors[name] && (

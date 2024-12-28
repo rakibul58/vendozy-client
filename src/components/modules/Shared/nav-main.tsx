@@ -12,6 +12,7 @@ import {
   LucideIcon,
   View,
   User,
+  LayoutDashboardIcon,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -64,6 +65,11 @@ const vendorRoutes: RouteItem[] = [
 ];
 
 const customerRoutes: RouteItem[] = [
+  {
+    href: "/customer/dashboard",
+    icon: LayoutDashboardIcon,
+    label: "Dashboard",
+  },
   {
     href: "/customer",
     icon: User,
