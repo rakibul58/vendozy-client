@@ -15,7 +15,7 @@ const FlashSaleCTA = () => {
         ease: "easeInOut",
         repeatType: "reverse",
       }}
-      className="bg-gradient-to-r from-primary to-accent p-12 rounded-xl shadow-2xl w-full mx-auto my-10"
+      className="bg-gradient-to-r from-primary to-accent p-12 rounded-xl shadow-2xl w-full mx-auto mt-10 mb-20 "
     >
       <div className="flex items-center flex-wrap justify-between space-y-4">
         <div className="flex items-center space-x-4">

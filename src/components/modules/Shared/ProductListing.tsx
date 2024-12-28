@@ -169,7 +169,7 @@ const ProductListing: React.FC = () => {
   ];
 
   return (
-    <div className="pb-10">
+    <div className="pb-10 mt-10">
       {/* Filters Section */}
       <Card className="mb-4">
         <CardHeader>

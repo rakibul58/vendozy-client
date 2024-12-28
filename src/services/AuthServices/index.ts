@@ -143,10 +143,7 @@ export const changePassword = async (payload: FieldValues) => {
 
 export const updateCustomer = async (payload: FieldValues) => {
   try {
-    const { data } = await axiosInstance.put(
-      "/users/update-customer",
-      payload
-    );
+    const { data } = await axiosInstance.put("/users/update-customer", payload);
     return data;
   } catch (error: any) {
     throw new Error(error);
@@ -155,10 +152,7 @@ export const updateCustomer = async (payload: FieldValues) => {
 
 export const updateVendor = async (payload: FieldValues) => {
   try {
-    const { data } = await axiosInstance.put(
-      "/users/update-vendor",
-      payload
-    );
+    const { data } = await axiosInstance.put("/users/update-vendor", payload);
     return data;
   } catch (error: any) {
     throw new Error(error);
@@ -167,10 +161,7 @@ export const updateVendor = async (payload: FieldValues) => {
 
 export const updateAdmin = async (payload: FieldValues) => {
   try {
-    const { data } = await axiosInstance.put(
-      "/users/update-admin",
-      payload
-    );
+    const { data } = await axiosInstance.put("/users/update-admin", payload);
     return data;
   } catch (error: any) {
     throw new Error(error);
@@ -178,6 +169,7 @@ export const updateAdmin = async (payload: FieldValues) => {
 };
 
 export const logout = async () => {
-  (await cookies()).delete("accessToken");
-  (await cookies()).delete("refreshToken");
+  const cookieStore = await cookies();
+  cookieStore.delete("accessToken");
+  cookieStore.delete("refreshToken");
 };

@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { motion } from "motion/react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import VForm from "@/components/form/VForm";
@@ -9,114 +10,129 @@ import { useUserChangePassword } from "@/hooks/auth.hook";
 import Loading from "@/components/modules/Shared/LoadingBlur";
 import { AuthValidations } from "@/schemas/auth.validations";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Card, CardContent } from "@/components/ui/card";
+import { LockKeyhole } from "lucide-react";
 
 export default function ChangePassword() {
-  const {
-    mutate: handleChangePassword,
-    isPending,
-  } = useUserChangePassword();
+  const { mutate: handleChangePassword, isPending } = useUserChangePassword();
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     handleChangePassword({
       oldPassword: data.currentPassword,
-      newPassword: data.newPassword
+      newPassword: data.newPassword,
     });
   };
 
   return (
-    <div className="flex items-center justify-center px-4 min-h-[70vh]">
+    <div className="w-full min-h-screen">
       {isPending && <Loading />}
       <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{
-          duration: 0.4,
-          ease: "easeInOut",
-        }}
-        className="w-full max-w-md space-y-6 rounded-xl border border-gray-200 p-8 dark:border-gray-700 my-auto"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="w-full"
       >
-        <motion.div
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="text-center"
-        >
-          <h3 className="text-3xl font-bold text-gray-800 dark:text-gray-200">
-            Change Password
-          </h3>
-          <p className="mt-2 text-gray-600 dark:text-gray-400">
-            Update your account password
-          </p>
-        </motion.div>
+        <div className="p-6">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold">Security Settings</h1>
+            <p className="text-muted-foreground mt-2">
+              Manage your account security and password
+            </p>
+          </div>
 
-        <VForm
-          resolver={zodResolver(AuthValidations.changePasswordValidationSchema)}
-          onSubmit={onSubmit}
-        >
-          <motion.div
-            initial={{ x: 0, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="mb-4"
-          >
-            <VInput
-              label="Current Password"
-              name="currentPassword"
-              type="password"
-              placeholder="Enter current password"
-            />
-          </motion.div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Security Info Card */}
+            <Card className="lg:col-span-1 flex items-center">
+              <CardContent className="p-6">
+                <div className="flex flex-col items-center text-center">
+                  <motion.div
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4"
+                  >
+                    <LockKeyhole className="w-8 h-8 text-primary" />
+                  </motion.div>
+                  <h3 className="text-xl font-semibold mb-2">
+                    Password Security
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    Ensure your account stays secure by using a strong password
+                    that you don&apos;t use for other websites.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
 
-          <motion.div
-            initial={{ x: 0, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="mb-4"
-          >
-            <VInput
-              label="New Password"
-              name="newPassword"
-              type="password"
-              placeholder="Enter new password"
-            />
-          </motion.div>
+            {/* Change Password Form Card */}
+            <Card className="lg:col-span-2">
+              <CardContent className="p-6">
+                <h3 className="text-xl font-semibold mb-6">Change Password</h3>
+                <VForm
+                  resolver={zodResolver(
+                    AuthValidations.changePasswordValidationSchema
+                  )}
+                  onSubmit={onSubmit}
+                >
+                  <div className="space-y-6">
+                    <motion.div
+                      initial={{ x: -20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      <VInput
+                        label="Current Password"
+                        name="currentPassword"
+                        type="password"
+                        placeholder="Enter current password"
+                      />
+                    </motion.div>
 
-          <motion.div
-            initial={{ x: 0, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="mb-4"
-          >
-            <VInput
-              label="Confirm New Password"
-              name="confirmPassword"
-              type="password"
-              placeholder="Confirm new password"
-            />
-          </motion.div>
+                    <motion.div
+                      initial={{ x: -20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: 0.3 }}
+                    >
+                      <VInput
+                        label="New Password"
+                        name="newPassword"
+                        type="password"
+                        placeholder="Enter new password"
+                      />
+                    </motion.div>
 
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="flex flex-col space-y-4"
-          >
-            <Button
-              className="w-full rounded-md font-semibold group"
-              size="lg"
-              type="submit"
-              disabled={isPending}
-            >
-              <motion.span
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="inline-block"
-              >
-                {isPending ? "Changing Password..." : "Change Password"}
-              </motion.span>
-            </Button>
-          </motion.div>
-        </VForm>
+                    <motion.div
+                      initial={{ x: -20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: 0.4 }}
+                    >
+                      <VInput
+                        label="Confirm New Password"
+                        name="confirmPassword"
+                        type="password"
+                        placeholder="Confirm new password"
+                      />
+                    </motion.div>
+
+                    <motion.div
+                      initial={{ y: 20, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.5 }}
+                      className="pt-2"
+                    >
+                      <Button
+                        className="w-full md:w-auto"
+                        size="lg"
+                        type="submit"
+                        disabled={isPending}
+                      >
+                        {isPending ? "Changing Password..." : "Change Password"}
+                      </Button>
+                    </motion.div>
+                  </div>
+                </VForm>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </motion.div>
     </div>
   );
