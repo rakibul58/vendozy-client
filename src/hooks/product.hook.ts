@@ -1,9 +1,19 @@
 import {
+  createProduct,
+  deleteProduct,
   getAllProducts,
   getProductById,
   getRecentViewProducts,
+  updateProduct,
 } from "@/services/ProductServices";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { FieldValues } from "react-hook-form";
+import { toast } from "sonner";
 
 export const useProductList = (options: {
   limit?: number;
@@ -14,7 +24,7 @@ export const useProductList = (options: {
   maxPrice?: number;
   minPrice?: number;
   isFlashSale?: string;
-  vendor?: string
+  vendor?: string;
 }) => {
   return useInfiniteQuery({
     queryKey: ["products", options],
@@ -45,5 +55,56 @@ export const useProductDetail = (id: string) => {
     queryKey: ["products", id],
     queryFn: () => getProductById(id),
     enabled: !!id,
+  });
+};
+
+export const useCreateProduct = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: createProduct,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      toast.success("Product created successfully");
+      return data;
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || "Failed to create product");
+    },
+  });
+};
+
+// Hook for updating a category
+export const useUpdateProduct = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: FieldValues }) =>
+      updateProduct(id, data),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: ["products", data.data.id] });
+      toast.success("Product updated successfully");
+      return data;
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || "Failed to Product category");
+    },
+  });
+};
+
+// Hook for deleting a category
+export const useDeleteProduct = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: deleteProduct,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      toast.success("Product deleted successfully");
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || "Failed to delete Product");
+    },
   });
 };
