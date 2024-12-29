@@ -1,6 +1,7 @@
 import {
   getAdminDashboard,
   getCustomerDashboard,
+  getNewsletters,
   getVendorDashboard,
 } from "@/services/UserServices";
 import { useQuery } from "@tanstack/react-query";
@@ -23,5 +24,15 @@ export const useAdminDashboard = () => {
   return useQuery({
     queryKey: ["Admin_dashboard"],
     queryFn: () => getAdminDashboard(),
+  });
+};
+
+export const useGetNewsletters = (options?: {
+  page?: number;
+  limit?: number;
+}) => {
+  return useQuery({
+    queryKey: ["newsletters", options],
+    queryFn: () => getNewsletters(options),
   });
 };

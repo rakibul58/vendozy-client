@@ -14,6 +14,7 @@ import {
   Home,
   Key,
   MessageCircleReply,
+  Newspaper,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -44,7 +45,12 @@ const adminRoutes: RouteItem[] = [
     href: "/admin/users",
     icon: Users,
     label: "User Management",
-  }
+  },
+  {
+    href: "/admin/newsletters",
+    icon: Newspaper,
+    label: "Newsletters",
+  },
 ];
 
 const vendorRoutes: RouteItem[] = [

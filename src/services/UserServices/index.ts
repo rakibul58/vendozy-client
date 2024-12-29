@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use server"
+"use server";
 import axiosInstance from "@/lib/AxiosInstance";
 
 export const getCustomerDashboard = async () => {
@@ -8,7 +8,9 @@ export const getCustomerDashboard = async () => {
     // console.log(data?.data);
     return data?.data;
   } catch (error: any) {
-    throw new Error(error.response?.data?.message || "Failed to fetch dashboard");
+    throw new Error(
+      error.response?.data?.message || "Failed to fetch dashboard"
+    );
   }
 };
 
@@ -18,10 +20,11 @@ export const getVendorDashboard = async () => {
     // console.log(data?.data);
     return data?.data;
   } catch (error: any) {
-    throw new Error(error.response?.data?.message || "Failed to fetch dashboard");
+    throw new Error(
+      error.response?.data?.message || "Failed to fetch dashboard"
+    );
   }
 };
-
 
 export const getAdminDashboard = async () => {
   try {
@@ -29,7 +32,29 @@ export const getAdminDashboard = async () => {
     // console.log(data?.data);
     return data?.data;
   } catch (error: any) {
-    throw new Error(error.response?.data?.message || "Failed to fetch dashboard");
+    throw new Error(
+      error.response?.data?.message || "Failed to fetch dashboard"
+    );
   }
 };
 
+export const getNewsletters = async (options?: {
+  page?: number;
+  limit?: number;
+}) => {
+  try {
+    console.log('Called');
+    const { data } = await axiosInstance.get("/users/newsletters", {
+      params: {
+        page: options?.page || 1,
+        limit: options?.limit || 5,
+      },
+    });
+    // console.log(data);
+    return data;
+  } catch (error: any) {
+    throw new Error(
+      error.response?.data?.message || "Failed to fetch newsletters"
+    );
+  }
+};
