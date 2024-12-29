@@ -58,7 +58,11 @@ export default function CategoryManagementPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Queries and Mutations
-  const { data: categoriesData, isLoading: isFetchLoading } = useCategoryList({
+  const {
+    data: categoriesData,
+    isFetching,
+    isLoading,
+  } = useCategoryList({
     page,
     searchTerm,
   });
@@ -163,7 +167,9 @@ export default function CategoryManagementPage() {
         <Input
           placeholder="Search categories..."
           value={searchTerm}
-          onChange={(e) => {setSearchTerm(e.target.value)}}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+          }}
           className="w-1/3"
         />
         <Button onClick={() => handleOpenDialog()}>
@@ -180,54 +186,61 @@ export default function CategoryManagementPage() {
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody>
-          {categoriesData?.data?.map((category: any) => (
-            <TableRow key={category.id}>
-              <TableCell>
-                {category.image && (
-                  <Image
-                    src={category.image}
-                    alt={category.name}
-                    width={50}
-                    height={50}
-                    className="object-cover rounded-md"
-                  />
-                )}
-              </TableCell>
-              <TableCell>{category.name}</TableCell>
-              <TableCell>{category.description}</TableCell>
-              <TableCell>
-                <div className="flex space-x-2">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => handleOpenDialog(category)}
-                    disabled={
-                      updateMutation.isPending || deleteMutation.isPending
-                    }
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="destructive"
-                    size="icon"
-                    onClick={() => deleteMutation.mutate(category.id)}
-                    disabled={
-                      updateMutation.isPending || deleteMutation.isPending
-                    }
-                  >
-                    {deleteMutation.isPending ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <Trash2 className="h-4 w-4" />
-                    )}
-                  </Button>
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
-          {isFetchLoading && <CategoryRow />}
-        </TableBody>
+        {isFetching || isLoading ? (
+          <TableBody>
+            <CategoryRow />
+            <CategoryRow />
+            <CategoryRow />
+          </TableBody>
+        ) : (
+          <TableBody>
+            {categoriesData?.data?.map((category: any) => (
+              <TableRow key={category.id}>
+                <TableCell>
+                  {category.image && (
+                    <Image
+                      src={category.image}
+                      alt={category.name}
+                      width={50}
+                      height={50}
+                      className="object-cover rounded-md"
+                    />
+                  )}
+                </TableCell>
+                <TableCell>{category.name}</TableCell>
+                <TableCell>{category.description}</TableCell>
+                <TableCell>
+                  <div className="flex space-x-2">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => handleOpenDialog(category)}
+                      disabled={
+                        updateMutation.isPending || deleteMutation.isPending
+                      }
+                    >
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      size="icon"
+                      onClick={() => deleteMutation.mutate(category.id)}
+                      disabled={
+                        updateMutation.isPending || deleteMutation.isPending
+                      }
+                    >
+                      {deleteMutation.isPending ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <Trash2 className="h-4 w-4" />
+                      )}
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        )}
       </Table>
 
       <div className="flex justify-between items-center mt-4">
