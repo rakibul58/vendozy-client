@@ -66,6 +66,54 @@ export const getAllCoupons = async (options?: CouponOptions) => {
   }
 };
 
+export const getCouponsById = async (id: string) => {
+  try {
+    const { data } = await axiosInstance.get(`/coupons/${id}`);
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Failed to fetch coupon");
+  }
+};
+
+export const createCoupon = async (payload: FieldValues) => {
+  try {
+    const { data } = await axiosInstance.post(`/coupons`, payload);
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Failed to create coupon");
+  }
+};
+
+export const updateCoupons = async (id: string, payload: FieldValues) => {
+  try {
+    const { data } = await axiosInstance.put(`/coupons/${id}`, payload);
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Failed to update coupon");
+  }
+};
+
+export const deleteCoupon = async (id: string) => {
+  try {
+    const { data } = await axiosInstance.delete(`/coupons/${id}`);
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Failed to delete coupon");
+  }
+};
+
 export const getAllCustomerOrders = async (options?: OrderOptions) => {
   try {
     const { data } = await axiosInstance.get("/orders/customer-orders", {

@@ -3,15 +3,20 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   addReply,
   addReview,
+  createCoupon,
+  deleteCoupon,
   getAllCoupons,
   getAllCustomerOrders,
   getAllVendorOrders,
   getAllVendorReviews,
+  getCouponsById,
   initiatePayment,
+  updateCoupons,
 } from "@/services/OrderServices";
 import { getCart } from "@/services/CartServices";
 import { Coupon } from "@/components/modules/Products/AvailableCoupons";
 import { toast } from "sonner";
+import { FieldValues } from "react-hook-form";
 
 export interface CheckoutTotals {
   subtotal: number;
@@ -55,6 +60,63 @@ export interface CheckoutData {
   isSingleProduct: boolean;
 }
 
+export const useCouponDetail = (id: string) => {
+  return useQuery({
+    queryKey: ["coupons", id],
+    queryFn: () => getCouponsById(id),
+    enabled: !!id,
+  });
+};
+
+export const useCreateCoupon = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: createCoupon,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["coupons"] });
+      toast.success("Coupon created successfully");
+      return data;
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || "Failed to create coupon");
+    },
+  });
+};
+
+export const useUpdateCoupon = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: FieldValues }) =>
+      updateCoupons(id, data),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["coupons"] });
+      queryClient.invalidateQueries({ queryKey: ["coupons", data.data.id] });
+      toast.success("Coupon updated successfully");
+      return data;
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || "Failed to update coupon");
+    },
+  });
+};
+
+export const useDeleteCoupon = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: deleteCoupon,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["coupons"] });
+      toast.success("Coupon deleted successfully");
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || "Failed to delete coupon");
+    },
+  });
+};
+
 export const useAvailableCoupons = (options: CouponOptions) => {
   return useQuery({
     queryKey: ["coupons", options],
@@ -89,7 +151,6 @@ export const useAddReviews = () => {
   return useMutation({
     mutationFn: addReview,
     onSuccess: (data) => {
-      // Invalidate and refetch categories list
       queryClient.invalidateQueries({ queryKey: ["orders"] });
       toast.success("Review added successfully");
       return data;
@@ -106,7 +167,6 @@ export const useAddReply = () => {
   return useMutation({
     mutationFn: addReply,
     onSuccess: (data) => {
-      // Invalidate and refetch categories list
       queryClient.invalidateQueries({ queryKey: ["reviews"] });
       toast.success("Reply added successfully");
       return data;
