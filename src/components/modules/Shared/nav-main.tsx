@@ -14,6 +14,7 @@ import {
   LayoutDashboardIcon,
   Home,
   Key,
+  MessageCircleReply,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -67,6 +68,11 @@ const vendorRoutes: RouteItem[] = [
     href: "/vendor/orders",
     icon: ShoppingCart,
     label: "Orders",
+  },
+  {
+    href: "/vendor/reviews",
+    icon: MessageCircleReply,
+    label: "Reviews",
   },
   {
     href: "/vendor/change-password",

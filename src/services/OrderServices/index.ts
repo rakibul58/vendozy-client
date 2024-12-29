@@ -101,11 +101,37 @@ export const getAllVendorOrders = async (options?: OrderOptions) => {
   }
 };
 
+export const getAllVendorReviews = async (options?: OrderOptions) => {
+  try {
+    const { data } = await axiosInstance.get("/orders/vendor-reviews", {
+      params: {
+        page: options?.page || 1,
+        limit: options?.limit || 10,
+      },
+    });
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Failed to fetch Reviews");
+  }
+};
+
 export const addReview = async (reviewData: FieldValues) => {
   try {
     const { data } = await axiosInstance.post("/orders/add-review", reviewData);
     return data;
   } catch (error: any) {
     throw new Error(error.response?.data?.message || "Failed to add review");
+  }
+};
+
+export const addReply = async (reviewData: FieldValues) => {
+  try {
+    const { data } = await axiosInstance.post("/orders/add-reply", reviewData);
+    return data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || "Failed to add reply");
   }
 };

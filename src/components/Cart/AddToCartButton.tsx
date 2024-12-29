@@ -20,6 +20,7 @@ interface AddToCartButtonProps extends ButtonProps {
     | "link";
   size?: "default" | "sm" | "lg" | "icon";
   iconOnly?: boolean;
+  quantity?: number
 }
 
 export const AddToCartButton = ({
@@ -28,6 +29,7 @@ export const AddToCartButton = ({
   size = "default",
   className = "",
   iconOnly = false,
+  quantity = 1,
   ...props
 }: AddToCartButtonProps) => {
   const { user } = useUser();
@@ -36,7 +38,6 @@ export const AddToCartButton = ({
   const { mutate: addToCart, isPending } = useAddToCart();
 
   const handleAddToCart = async () => {
-    console.log({ currentCart, product, items: !!currentCart?.items?.length });
     if (
       currentCart?.vendor &&
       !!currentCart?.items?.length &&
@@ -48,7 +49,7 @@ export const AddToCartButton = ({
       addToCart(
         {
           productId: product.id,
-          quantity: 1,
+          quantity: quantity,
           vendorId: product.vendorId,
         },
         {

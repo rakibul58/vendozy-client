@@ -4,7 +4,14 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Star, Eye, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Star,
+  Eye,
+  ChevronLeft,
+  ChevronRight,
+  Minus,
+  Plus,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -20,7 +27,7 @@ interface Product {
   description: string;
   price: number;
   images: string[];
-  vendor: { name: string; id: string };
+  vendor: { name: string; id: string; logo: string };
   category: { name: string };
   averageRating: number;
   isFlashSale?: boolean;
@@ -36,8 +43,18 @@ export default function ProductDetailsPage({
   const router = useRouter();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { user } = useUser();
+  const [quantity, setQuantity] = useState(1);
 
-  console.log(data);
+  // Add quantity control handlers
+  const incrementQuantity = () => {
+    setQuantity((prev) => prev + 1);
+  };
+
+  const decrementQuantity = () => {
+    if (quantity > 1) {
+      setQuantity((prev) => prev - 1);
+    }
+  };
 
   const handleProductDetails = (product: Product) => {
     router.push(`/products/${product.id}`);
@@ -162,9 +179,34 @@ export default function ProductDetailsPage({
 
           <p className="text-muted-foreground">{data?.product?.description}</p>
 
+          <div className="flex items-center space-x-4">
+            <span className="text-sm font-medium">Quantity:</span>
+            <div className="flex items-center space-x-2">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={decrementQuantity}
+                disabled={quantity <= 1}
+                className="h-8 w-8"
+              >
+                <Minus className="h-4 w-4" />
+              </Button>
+              <span className="w-12 text-center">{quantity}</span>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={incrementQuantity}
+                className="h-8 w-8"
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+
           <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
             <AddToCartButton
               product={data?.product}
+              quantity={quantity}
               size="lg"
               className="w-full sm:flex-1"
               disabled={user?.role !== "CUSTOMER"}
@@ -252,7 +294,10 @@ export default function ProductDetailsPage({
       </section>
 
       <section className="mt-12">
-        <ProductReviews reviews={data?.product?.Review || []} />
+        <ProductReviews
+          reviews={data?.product?.Review || []}
+          vendor={data?.product?.vendor}
+        />
       </section>
     </div>
   );

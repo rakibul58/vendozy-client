@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
+  addReply,
   addReview,
   getAllCoupons,
   getAllCustomerOrders,
   getAllVendorOrders,
+  getAllVendorReviews,
   initiatePayment,
 } from "@/services/OrderServices";
 import { getCart } from "@/services/CartServices";
@@ -74,6 +76,13 @@ export const useVendorOrderList = (options: options) => {
   });
 };
 
+export const useVendorReviewList = (options: options) => {
+  return useQuery({
+    queryKey: ["reviews", options],
+    queryFn: () => getAllVendorReviews(options),
+  });
+};
+
 export const useAddReviews = () => {
   const queryClient = useQueryClient();
 
@@ -87,6 +96,23 @@ export const useAddReviews = () => {
     },
     onError: (error: Error) => {
       toast.error(error.message || "Failed to add review");
+    },
+  });
+};
+
+export const useAddReply = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: addReply,
+    onSuccess: (data) => {
+      // Invalidate and refetch categories list
+      queryClient.invalidateQueries({ queryKey: ["reviews"] });
+      toast.success("Reply added successfully");
+      return data;
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || "Failed to add reply");
     },
   });
 };

@@ -41,11 +41,9 @@ interface Order {
 const EmptyState: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-center py-12">
-      <ShoppingBag className="w-16 h-16 text-gray-400 mb-4" />
-      <h3 className="text-xl font-semibold text-gray-900 mb-2">
-        No Orders Yet
-      </h3>
-      <p className="text-gray-500 text-center mb-6 max-w-sm">
+      <ShoppingBag className="w-16 h-16  mb-4" />
+      <h3 className="text-xl font-semibold  mb-2">No Orders Yet</h3>
+      <p className=" text-center mb-6 max-w-sm">
         You haven&apos;t received any orders yet. Orders will appear here when
         customers make purchases.
       </p>
@@ -192,7 +190,7 @@ const VendorOrdersPage: React.FC = () => {
                       >
                         {order.customer.name}
                       </button>
-                      <p className="text-xs md:text-sm text-gray-500 truncate">
+                      <p className="text-xs md:text-sm  truncate">
                         {order.customer.email}
                       </p>
                     </div>
@@ -220,7 +218,7 @@ const VendorOrdersPage: React.FC = () => {
                       {order.couponCode}
                     </span>
                   ) : (
-                    <span className="text-gray-400">-</span>
+                    <span className="">-</span>
                   )}
                 </TableCell>
               </TableRow>
@@ -230,7 +228,7 @@ const VendorOrdersPage: React.FC = () => {
       </div>
 
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-4">
-        <div className="text-sm text-gray-500 order-2 sm:order-1">
+        <div className="text-sm  order-2 sm:order-1">
           Page {page} of {Math.ceil((ordersData?.meta?.total || 0) / 10)}
         </div>
         <div className="flex space-x-2 w-full sm:w-auto order-1 sm:order-2">

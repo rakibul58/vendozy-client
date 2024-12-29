@@ -8,11 +8,13 @@ export interface ReviewReplyType {
   id: string;
   comment: string;
   createdAt: string;
-  vendor: {
-    name: string;
-    logo: string;
-  };
+ 
 }
+
+export interface Vendor {
+  name: string;
+  logo: string;
+};
 
 export interface ReviewType {
   id: string;
@@ -28,10 +30,13 @@ export interface ReviewType {
 
 interface ProductReviewsProps {
   reviews: ReviewType[];
+  vendor: Vendor;
 }
 
-const ProductReviews = ({ reviews = [] }: ProductReviewsProps) => {
+const ProductReviews = ({ reviews = [], vendor }: ProductReviewsProps) => {
   const recentReviews = reviews.slice(0, 5);
+
+  console.log({ recentReviews });
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -110,8 +115,8 @@ const ProductReviews = ({ reviews = [] }: ProductReviewsProps) => {
                       >
                         <Avatar className="h-8 w-8">
                           <AvatarImage
-                            src={reply.vendor.logo}
-                            alt={reply.vendor.name}
+                            src={vendor?.logo || ""}
+                            alt={vendor?.name}
                           />
                           <AvatarFallback>
                             <MessageSquare className="h-4 w-4" />
@@ -120,7 +125,7 @@ const ProductReviews = ({ reviews = [] }: ProductReviewsProps) => {
                         <div className="flex-1">
                           <div className="flex justify-between items-start">
                             <h5 className="text-sm font-medium">
-                              {reply.vendor.name}{" "}
+                              {vendor.name}{" "}
                               <span className="text-muted-foreground">
                                 (Vendor)
                               </span>
