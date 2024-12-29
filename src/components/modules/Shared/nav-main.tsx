@@ -7,7 +7,6 @@ import {
   Package,
   ShoppingCart,
   Users,
-  BarChart,
   LucideIcon,
   View,
   User,
@@ -27,6 +26,11 @@ interface RouteItem {
 
 const adminRoutes: RouteItem[] = [
   {
+    href: "/admin/dashboard",
+    icon: LayoutDashboardIcon,
+    label: "Dashboard",
+  },
+  {
     href: "/admin/manage-categories",
     icon: Tag,
     label: "Manage Categories",
@@ -40,12 +44,7 @@ const adminRoutes: RouteItem[] = [
     href: "/admin/users",
     icon: Users,
     label: "User Management",
-  },
-  {
-    href: "/admin/dashboard",
-    icon: BarChart,
-    label: "Dashboard",
-  },
+  }
 ];
 
 const vendorRoutes: RouteItem[] = [

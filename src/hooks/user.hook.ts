@@ -1,4 +1,8 @@
-import { getCustomerDashboard, getVendorDashboard } from "@/services/UserServices";
+import {
+  getAdminDashboard,
+  getCustomerDashboard,
+  getVendorDashboard,
+} from "@/services/UserServices";
 import { useQuery } from "@tanstack/react-query";
 
 export const useCustomerDashboard = () => {
@@ -12,5 +16,12 @@ export const useVendorDashboard = () => {
   return useQuery({
     queryKey: ["vendor_dashboard"],
     queryFn: () => getVendorDashboard(),
+  });
+};
+
+export const useAdminDashboard = () => {
+  return useQuery({
+    queryKey: ["Admin_dashboard"],
+    queryFn: () => getAdminDashboard(),
   });
 };
