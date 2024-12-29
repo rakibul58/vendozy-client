@@ -146,7 +146,7 @@ export default function VendorOnboardingPage() {
   useEffect(() => {
     // console.log("object 1");
     if (!createMutation.isPending && createMutation.isSuccess) {
-      router.push("/vendor");
+      router.push("/vendor/dashboard");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [createMutation.isPending, createMutation.isSuccess, userLoading, user]);

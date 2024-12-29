@@ -52,6 +52,11 @@ const vendorRoutes: RouteItem[] = [
     label: "Dashboard",
   },
   {
+    href: "/vendor",
+    icon: User,
+    label: "Profile",
+  },
+  {
     href: "/vendor/products",
     icon: Package,
     label: "My Products",
