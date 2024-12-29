@@ -12,6 +12,8 @@ import {
   View,
   User,
   LayoutDashboardIcon,
+  Home,
+  Key,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -53,8 +55,8 @@ const vendorRoutes: RouteItem[] = [
   },
   {
     href: "/vendor",
-    icon: User,
-    label: "Profile",
+    icon: Home,
+    label: "Shop",
   },
   {
     href: "/vendor/manage-products",
@@ -65,6 +67,11 @@ const vendorRoutes: RouteItem[] = [
     href: "/vendor/orders",
     icon: ShoppingCart,
     label: "Orders",
+  },
+  {
+    href: "/vendor/change-password",
+    icon: Key,
+    label: "Change Password",
   },
 ];
 

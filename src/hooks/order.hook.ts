@@ -4,6 +4,7 @@ import {
   addReview,
   getAllCoupons,
   getAllCustomerOrders,
+  getAllVendorOrders,
   initiatePayment,
 } from "@/services/OrderServices";
 import { getCart } from "@/services/CartServices";
@@ -63,6 +64,13 @@ export const useCustomerOrderList = (options: options) => {
   return useQuery({
     queryKey: ["orders", options],
     queryFn: () => getAllCustomerOrders(options),
+  });
+};
+
+export const useVendorOrderList = (options: options) => {
+  return useQuery({
+    queryKey: ["orders", options],
+    queryFn: () => getAllVendorOrders(options),
   });
 };
 
