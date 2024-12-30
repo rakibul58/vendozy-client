@@ -79,7 +79,7 @@ export const UserAvatarDropdown: React.FC<UserAvatarDropdownProps> = ({
               className="cursor-pointer"
               onSelect={handleDashboardNavigation}
             >
-              <View className="mr-4 h-4 w-4" />
+              <View className="mr-2 h-4" />
               <span>Recent Views</span>
             </DropdownMenuItem>
           </Link>

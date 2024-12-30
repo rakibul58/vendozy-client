@@ -62,7 +62,7 @@ const MegaMenu = () => {
             className={cn(
               "transition-colors hover:text-foreground bg-transparent",
               "data-[state=open]:bg-transparent data-[state=open]:text-foreground",
-              "hover:bg-transparent focus:bg-transparent",
+              "hover:bg-transparent focus:bg-transparent text-sm",
               "h-auto px-0"
             )}
           >
@@ -72,7 +72,7 @@ const MegaMenu = () => {
             {isLoading ? (
               <LoadingState />
             ) : (
-              <div className="w-full p-4 md:w-[35vw] bg-popover">
+              <div className="w-full p-4 md:w-[65vw] bg-popover">
                 <div className="grid grid-cols-3 gap-4 max-h-[calc(100vh-12rem)] overflow-y-auto">
                   {categories?.data?.map((category: Category) => (
                     <div key={category.id} className="space-y-3">

@@ -7,7 +7,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
       <div>
         <Navbar />
       </div>
-      <main className="w-full max-w-6xl mx-auto lg:px-0 px-4 mt-20">
+      <main className="w-full max-w-6xl mx-auto lg:px-0 px-4 mt-32">
         {children}
       </main>
       <div>
