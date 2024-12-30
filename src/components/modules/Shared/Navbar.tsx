@@ -35,7 +35,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     setIsNavigateLoading(true);
     queryClient.invalidateQueries({ queryKey: ["products"] });
-    logout();
+    await logout();
     userLoading(true);
 
     if (protectedRoutes.some((route) => pathname.match(route))) {
