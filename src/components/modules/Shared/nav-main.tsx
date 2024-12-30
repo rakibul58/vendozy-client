@@ -57,6 +57,16 @@ const adminRoutes: RouteItem[] = [
     icon: Newspaper,
     label: "Newsletters",
   },
+  {
+    href: "/admin/orders",
+    icon: ShoppingCart,
+    label: "Orders",
+  },
+  {
+    href: "/admin/reviews",
+    icon: MessageCircleReply,
+    label: "Reviews",
+  },
 ];
 
 const vendorRoutes: RouteItem[] = [

@@ -149,6 +149,23 @@ export const getAllVendorOrders = async (options?: OrderOptions) => {
   }
 };
 
+export const getAllAdminOrders = async (options?: OrderOptions) => {
+  try {
+    const { data } = await axiosInstance.get("/orders/admin-orders", {
+      params: {
+        page: options?.page || 1,
+        limit: options?.limit || 10,
+      },
+    });
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Failed to fetch Orders");
+  }
+};
+
 export const getAllVendorReviews = async (options?: OrderOptions) => {
   try {
     const { data } = await axiosInstance.get("/orders/vendor-reviews", {

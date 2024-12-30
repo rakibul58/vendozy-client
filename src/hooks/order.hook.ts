@@ -5,6 +5,7 @@ import {
   addReview,
   createCoupon,
   deleteCoupon,
+  getAllAdminOrders,
   getAllCoupons,
   getAllCustomerOrders,
   getAllVendorOrders,
@@ -135,6 +136,13 @@ export const useVendorOrderList = (options: options) => {
   return useQuery({
     queryKey: ["orders", options],
     queryFn: () => getAllVendorOrders(options),
+  });
+};
+
+export const useAdminOrderList = (options: options) => {
+  return useQuery({
+    queryKey: ["orders", options],
+    queryFn: () => getAllAdminOrders(options),
   });
 };
 
