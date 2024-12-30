@@ -246,7 +246,7 @@ export default function Signup() {
   };
 
   return (
-    <div className="h-[calc(100vh-7rem)] flex flex-col lg:flex-row gap-8 py-8">
+    <div className="flex flex-col lg:flex-row gap-8 py-8 my-10">
       {(isPending || vendorIsPending) && <Loading />}
 
       {/* Left side - Branding/Image */}

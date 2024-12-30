@@ -72,7 +72,7 @@ const MegaMenu = () => {
             {isLoading ? (
               <LoadingState />
             ) : (
-              <div className="w-[600px] p-4 md:w-[800px] bg-popover">
+              <div className="w-full p-4 md:w-[35vw] bg-popover">
                 <div className="grid grid-cols-3 gap-4 max-h-[calc(100vh-12rem)] overflow-y-auto">
                   {categories?.data?.map((category: Category) => (
                     <div key={category.id} className="space-y-3">
