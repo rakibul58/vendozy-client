@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ChevronUp, Eye, Columns, X } from "lucide-react";
+import { ChevronUp, Eye, Columns, X, Star } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useProductList } from "@/hooks/product.hook";
 import { useCategoryList } from "@/hooks/category.hook";
@@ -111,7 +111,7 @@ const ProductListing: React.FC = () => {
       sortBy: "createdAt",
       sortOrder: "desc",
     });
-    router.push("/products");
+    // router.push("/products");
   };
 
   // Scroll to top
@@ -169,173 +169,245 @@ const ProductListing: React.FC = () => {
   ];
 
   return (
-    <div className="pb-10 mt-10">
-      {/* Filters Section */}
-      <Card className="mb-4">
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between">
-            Product Filters
-            <Button variant="outline" size="sm" onClick={resetFilters}>
-              Clear Filters
-            </Button>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Input
-            placeholder="Search products..."
-            value={filters.searchTerm || ""}
-            onChange={(e) =>
-              setFilters((prev) => ({
-                ...prev,
-                searchTerm: e.target.value,
-              }))
-            }
-          />
+    <div className="py-10">
+      <div className="flex flex-col lg:flex-row gap-6">
+        {/* Left Sidebar Filters */}
+        <div className="w-full lg:w-64 flex-shrink-0">
+          <Card className="sticky top-4">
+            <CardHeader>
+              <CardTitle>Filters</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Search</label>
+                <Input
+                  placeholder="Search products..."
+                  value={filters.searchTerm || ""}
+                  onChange={(e) =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      searchTerm: e.target.value,
+                    }))
+                  }
+                />
+              </div>
 
-          <Select
-            value={filters.category || ""}
-            onValueChange={(value) =>
-              setFilters((prev) => ({
-                ...prev,
-                category: value || undefined,
-              }))
-            }
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Select Category" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value=" ">All Categories</SelectItem>
-              {categories?.data?.map((cat: { name: string; id: string }) => (
-                <SelectItem key={cat.id} value={cat.name}>
-                  {cat.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Category</label>
+                <Select
+                  value={filters.category || ""}
+                  onValueChange={(value) =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      category: value || undefined,
+                    }))
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value=" ">All Categories</SelectItem>
 
-          <div className="flex items-center gap-2">
-            <Input
-              type="number"
-              placeholder="Min Price"
-              value={filters.minPrice || ""}
-              onChange={(e) =>
-                setFilters((prev) => ({
-                  ...prev,
-                  minPrice: Number(e.target.value) || undefined,
-                }))
-              }
-            />
-            <Input
-              type="number"
-              placeholder="Max Price"
-              value={filters.maxPrice || ""}
-              onChange={(e) =>
-                setFilters((prev) => ({
-                  ...prev,
-                  maxPrice: Number(e.target.value) || undefined,
-                }))
-              }
-            />
-          </div>
-        </CardContent>
-      </Card>
+                    {categories?.data?.map(
+                      (cat: { id: string; name: string }) => (
+                        <SelectItem key={cat.id} value={cat.name}>
+                          {cat.name}
+                        </SelectItem>
+                      )
+                    )}
+                  </SelectContent>
+                </Select>
+              </div>
 
-      {/* Product Grid */}
-      <motion.div
-        layout
-        className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4"
-      >
-        <AnimatePresence>
-          {products.map((product) => (
-            <motion.div
-              key={product.id}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              whileHover={{
-                scale: 1.05,
-                boxShadow: "0 10px 20px rgba(0, 0, 0, 0.12)",
-              }}
-              transition={{
-                duration: 0.3,
-                type: "spring",
-                stiffness: 300,
-              }}
-              className="relative group rounded-md"
-            >
-              <Card className="overflow-hidden transition-all duration-300 h-full">
-                <CardContent className="p-4 relative">
-                  {/* Hover Action Buttons */}
-                  <div className="absolute top-2 right-2 z-10 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ">
-                    <Button
-                      size="icon"
-                      variant="outline"
-                      onClick={() => handleCompareSelect(product)}
-                      className="bg-accent/80 hover:bg-accent"
-                    >
-                      <Columns className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      size="icon"
-                      variant="outline"
-                      onClick={() => handleProductDetails(product)}
-                      className="bg-accent/80 hover:bg-accent"
-                    >
-                      <Eye className="h-4 w-4" />
-                    </Button>
-                    <AddToCartButton
-                      product={product}
-                      size="icon"
-                      className="bg-primary/80 hover:bg-primary"
-                      disabled={user?.role !== "CUSTOMER"}
-                      iconOnly
-                    />
-                  </div>
-
-                  <Image
-                    src={
-                      product?.images[0] ||
-                      "https://res.cloudinary.com/dk4zufod5/image/upload/v1724772905/kd9sy8amvzaky9popnfs.jpg"
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Price Range</label>
+                <div className="space-y-2">
+                  <Input
+                    type="number"
+                    placeholder="Min Price"
+                    value={filters.minPrice || ""}
+                    onChange={(e) =>
+                      setFilters((prev) => ({
+                        ...prev,
+                        minPrice: Number(e.target.value) || undefined,
+                      }))
                     }
-                    alt={product?.name}
-                    height={200}
-                    width={200}
-                    className="w-full h-48 object-cover transform transition-transform duration-300 group-hover:scale-110"
                   />
+                  <Input
+                    type="number"
+                    placeholder="Max Price"
+                    value={filters.maxPrice || ""}
+                    onChange={(e) =>
+                      setFilters((prev) => ({
+                        ...prev,
+                        maxPrice: Number(e.target.value) || undefined,
+                      }))
+                    }
+                  />
+                </div>
+              </div>
 
-                  <div className="mt-4">
-                    <h3 className="mt-2 font-semibold text-lg">
-                      {product.name}
-                    </h3>
-                    <p className="text-muted-foreground">
-                      {product.vendor.name}
-                    </p>
-                    <div className="flex justify-between items-center mt-2">
-                      <span className="font-bold text-primary">
-                        ${product.price}
-                      </span>
-                      {product.isFlashSale && (
-                        <Badge variant="destructive">Flash Sale</Badge>
-                      )}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Sort By</label>
+                <Select
+                  value={filters.sortBy}
+                  onValueChange={(value) =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      sortBy: value,
+                    }))
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Sort by..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="createdAt">Newest</SelectItem>
+                    <SelectItem value="price">Price</SelectItem>
+                    <SelectItem value="averageRating">Rating</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-          {isFetching &&
-            Array.from({ length: 4 }).map((_, idx) => (
-              <ProductSkeleton key={idx} />
-            ))}
-        </AnimatePresence>
-      </motion.div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Sort Order</label>
+                <Select
+                  value={filters.sortOrder}
+                  onValueChange={(value: "asc" | "desc") =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      sortOrder: value,
+                    }))
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Sort order..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="asc">Ascending</SelectItem>
+                    <SelectItem value="desc">Descending</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-      {/* No Products Message */}
-      {!isLoading && !isFetching && products.length === 0 && (
-        <div className="text-center py-4">No products found.</div>
-      )}
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={resetFilters}
+              >
+                Clear Filters
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Product Grid */}
+        <div className="flex-1">
+          <motion.div
+            layout
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+          >
+            <AnimatePresence>
+              {products.map((product) => (
+                <motion.div
+                  key={product.id}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  whileHover={{
+                    scale: 1.02,
+                    boxShadow: "0 10px 20px rgba(0, 0, 0, 0.12)",
+                  }}
+                  transition={{
+                    duration: 0.3,
+                    type: "spring",
+                    stiffness: 300,
+                  }}
+                  className="relative group"
+                >
+                  <Card className="overflow-hidden h-full">
+                    <CardContent className="p-4 relative">
+                      {/* Action Buttons */}
+                      <div className="absolute top-2 right-2 z-10 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <Button
+                          size="icon"
+                          variant="outline"
+                          onClick={() => handleCompareSelect(product)}
+                          className="bg-accent/80 hover:bg-accent"
+                        >
+                          <Columns className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          size="icon"
+                          variant="outline"
+                          onClick={() => handleProductDetails(product)}
+                          className="bg-accent/80 hover:bg-accent"
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        <AddToCartButton
+                          product={product}
+                          size="icon"
+                          className="bg-primary/80 hover:bg-primary"
+                          disabled={user?.role !== "CUSTOMER"}
+                          iconOnly
+                        />
+                      </div>
+
+                      <div className="aspect-w-1 aspect-h-1 mb-4">
+                        <Image
+                          src={product?.images[0] || "/placeholder.jpg"}
+                          alt={product?.name}
+                          height={200}
+                          width={200}
+                          className="w-full h-48 object-cover rounded-md transform transition-transform duration-300 group-hover:scale-105"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <h3 className="font-semibold text-lg line-clamp-2">
+                          {product.name}
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                          {product.vendor.name}
+                        </p>
+
+                        {/* Rating Display */}
+                        <div className="flex items-center gap-1">
+                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                          <span className="text-sm font-medium">
+                            {product.averageRating.toFixed(1)}
+                          </span>
+                        </div>
+
+                        <div className="flex justify-between items-center">
+                          <span className="font-bold text-primary text-lg">
+                            ${product.price}
+                          </span>
+                          {product.isFlashSale && (
+                            <Badge variant="destructive">Flash Sale</Badge>
+                          )}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+
+              {isFetching &&
+                Array.from({ length: 3 }).map((_, idx) => (
+                  <ProductSkeleton key={idx} />
+                ))}
+            </AnimatePresence>
+          </motion.div>
+
+          {/* No Products Message */}
+          {!isLoading && !isFetching && products.length === 0 && (
+            <div className="text-center py-8">No products found.</div>
+          )}
+        </div>
+      </div>
 
       {/* Scroll to Top Button */}
       {showScrollToTop && (
