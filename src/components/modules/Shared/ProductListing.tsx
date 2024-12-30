@@ -43,7 +43,7 @@ interface IProductParams {
   isFlashSale?: string;
 }
 
-interface Product {
+export interface Product {
   id: string;
   name: string;
   description: string;
@@ -52,6 +52,7 @@ interface Product {
     id: string;
     name: string;
   };
+  vendorId: string;
   images: string[];
   averageRating: number;
   vendor: {
@@ -66,7 +67,7 @@ const ProductListing: React.FC = () => {
   const { user } = useUser();
 
   const [filters, setFilters] = useState<IProductParams>({
-    limit: 8,
+    limit: 6,
     searchTerm: searchParams.get("searchTerm") || undefined,
     category: searchParams.get("category") || undefined,
     minPrice: searchParams.get("minPrice")
@@ -107,7 +108,7 @@ const ProductListing: React.FC = () => {
   // Reset filters
   const resetFilters = () => {
     setFilters({
-      limit: 8,
+      limit: 6,
       sortBy: "createdAt",
       sortOrder: "desc",
     });
