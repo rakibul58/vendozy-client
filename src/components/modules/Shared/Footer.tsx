@@ -135,13 +135,13 @@ const Footer = () => {
             </div>
             <div className="space-y-3 text-primary-foreground/80">
               <p className="flex items-center gap-2">
-                <MapPin className="h-4 w-4" /> 123 Commerce St, Shop City
+                <MapPin className="h-4 w-4" /> Colonel Hat, Chattogram
               </p>
               <p className="flex items-center gap-2">
-                <Phone className="h-4 w-4" /> +1 234 567 890
+                <Phone className="h-4 w-4" /> +8801850415714
               </p>
               <p className="flex items-center gap-2">
-                <Mail className="h-4 w-4" /> support@vendozy.com
+                <Mail className="h-4 w-4" /> rhrahi14@gmail.com
               </p>
             </div>
           </div>
