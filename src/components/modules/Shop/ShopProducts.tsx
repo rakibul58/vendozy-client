@@ -113,7 +113,7 @@ const ShopProducts = ({ vendor }: { vendor: string }) => {
       sortBy: "createdAt",
       sortOrder: "desc",
     });
-    router.push("/products");
+    // router.push("/products");
   };
 
   // Scroll to top

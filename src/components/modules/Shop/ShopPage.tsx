@@ -16,6 +16,7 @@ interface Vendor {
   description?: string;
   followerCount: number;
   productCount: number;
+  joinDate: string;
 }
 
 export default function ShopPage({ shop }: { shop: Vendor }) {
@@ -73,6 +74,9 @@ export default function ShopPage({ shop }: { shop: Vendor }) {
             </span>
             <span className="text-muted-foreground">
               {shop?.productCount} Product{shop?.productCount > 0 ? "s" : ""}
+            </span>
+            <span className="text-muted-foreground">
+              Joined at {new Date(shop.joinDate).toLocaleDateString()}
             </span>
           </div>
         </div>
