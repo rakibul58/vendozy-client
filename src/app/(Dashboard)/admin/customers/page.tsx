@@ -87,8 +87,6 @@ export default function Customer() {
     }
   };
 
-  console.log({ customersData });
-
   return (
     <div className="p-6">
       {updateCustomerStatus.isPending && <Loading />}

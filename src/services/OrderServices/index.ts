@@ -183,6 +183,23 @@ export const getAllVendorReviews = async (options?: OrderOptions) => {
   }
 };
 
+export const getAllAdminReviews = async (options?: OrderOptions) => {
+  try {
+    const { data } = await axiosInstance.get("/orders/admin-reviews", {
+      params: {
+        page: options?.page || 1,
+        limit: options?.limit || 10,
+      },
+    });
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Failed to fetch Reviews");
+  }
+};
+
 export const addReview = async (reviewData: FieldValues) => {
   try {
     const { data } = await axiosInstance.post("/orders/add-review", reviewData);
