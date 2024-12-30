@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
-import { Coupon } from "@/components/modules/Products/AvailableCoupons";
 import axiosInstance from "@/lib/AxiosInstance";
 import { FieldValues } from "react-hook-form";
 
@@ -46,7 +45,7 @@ export const initiatePayment = async (checkoutData: CheckoutPayload) => {
 
 export const getAllCoupons = async (options?: CouponOptions) => {
   try {
-    const { data } = await axiosInstance.get<{ data: Coupon[] }>("/coupons", {
+    const { data } = await axiosInstance.get("/coupons", {
       params: {
         page: options?.page ?? 1,
         limit: options?.limit ?? 5,
@@ -93,6 +92,7 @@ export const createCoupon = async (payload: FieldValues) => {
 export const updateCoupons = async (id: string, payload: FieldValues) => {
   try {
     const { data } = await axiosInstance.put(`/coupons/${id}`, payload);
+    // console.log(data);
     return data;
   } catch (error) {
     if (error instanceof Error) {

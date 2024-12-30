@@ -16,6 +16,7 @@ import {
   MessageCircleReply,
   Newspaper,
   HomeIcon,
+  BadgePercent,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -51,6 +52,11 @@ const adminRoutes: RouteItem[] = [
     href: "/admin/customers",
     icon: Users,
     label: "Customer Management",
+  },
+  {
+    href: "/admin/manage-coupons",
+    icon: BadgePercent,
+    label: "Coupon Management",
   },
   {
     href: "/admin/newsletters",
