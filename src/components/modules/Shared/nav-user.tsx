@@ -50,7 +50,7 @@ export function NavUser({ user, role, image }: UserAvatarDropdownProps) {
   const handleLogout = async () => {
     setIsNavigateLoading(true);
     queryClient.invalidateQueries({ queryKey: ["products"] });
-    logout();
+    await logout();
     userLoading(true);
 
     if (protectedRoutes.some((route) => pathname.match(route))) {

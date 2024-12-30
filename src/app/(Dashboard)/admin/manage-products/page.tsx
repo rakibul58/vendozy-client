@@ -5,7 +5,6 @@ import {
   Edit,
   Trash2,
   Copy,
-  Plus,
   Loader2,
   ChevronRight,
   ChevronLeft,
@@ -35,7 +34,6 @@ import { Input } from "@/components/ui/input";
 import ImageUploader from "@/components/modules/Shared/imageUploader";
 import Loading from "@/components/modules/Shared/LoadingBlur";
 import CategoryRow from "@/components/Skeletons/CategoryRow";
-import { useUser } from "@/context/user.provider";
 import {
   useCreateProduct,
   useDeleteProduct,
@@ -93,8 +91,7 @@ export default function VendorProductManagement() {
   const [isDuplicating, setIsDuplicating] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Hooks
-  const { user } = useUser();
+ 
   const createProduct = useCreateProduct();
   const updateProduct = useUpdateProduct();
   const deleteProduct = useDeleteProduct();
@@ -106,7 +103,6 @@ export default function VendorProductManagement() {
     fetchNextPage,
     fetchPreviousPage,
   } = useProductList({
-    vendor: user?.user?.name,
     searchTerm,
     limit: ITEMS_PER_PAGE,
   });
@@ -126,7 +122,7 @@ export default function VendorProductManagement() {
       images: [],
       isFlashSale: false,
       discount: 0,
-      vendorId: user?.user?.id || "",
+      vendorId:  "",
     },
   });
 
@@ -137,36 +133,6 @@ export default function VendorProductManagement() {
     limit: ITEMS_PER_PAGE,
   };
   const totalPages = Math.ceil(meta.total / meta.limit);
-
-  // // Handlers
-  // const handleOpenDialog = (product: Product | null, duplicate = false) => {
-  //   setSelectedProduct(product);
-  //   setIsDuplicating(duplicate);
-
-  //   if (product) {
-  //     const formData = {
-  //       ...product,
-  //       price: product.price,
-  //       inventoryCount: product.inventoryCount,
-  //       discount: product.discount || 0,
-  //     };
-  //     form.reset(formData);
-  //   } else {
-  //     form.reset({
-  //       name: "",
-  //       description: "",
-  //       price: 0,
-  //       categoryId: "",
-  //       inventoryCount: 0,
-  //       images: [],
-  //       isFlashSale: false,
-  //       discount: 0,
-  //       vendorId: user?.user?.id || "",
-  //     });
-  //   }
-
-  //   setIsDialogOpen(true);
-  // };
 
   const handleOpenDialog = (product: Product | null, duplicate = false) => {
     setSelectedProduct(product);
@@ -180,7 +146,7 @@ export default function VendorProductManagement() {
         inventoryCount: Number(product.inventoryCount),
         discount: Number(product.discount || 0),
         images: product.images || [],
-        vendorId: product.vendorId || user?.user?.id || "",
+        vendorId: product.vendorId  || "",
       };
       form.reset(formData);
     } else {
@@ -193,7 +159,7 @@ export default function VendorProductManagement() {
         images: [],
         isFlashSale: false,
         discount: 0,
-        vendorId: user?.user?.id || "",
+        vendorId:  "",
       });
     }
 
@@ -274,9 +240,6 @@ export default function VendorProductManagement() {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="max-w-md"
           />
-          <Button onClick={() => handleOpenDialog(null)}>
-            <Plus className="mr-2" /> Add Product
-          </Button>
         </div>
       </div>
 
