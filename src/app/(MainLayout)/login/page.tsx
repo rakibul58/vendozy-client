@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import Link from "next/link";
@@ -57,7 +58,7 @@ export default function Login() {
         }
       }
     }
-  }, [isPending, isSuccess, userLoading, user, redirect, router]);
+  }, [isPending, isSuccess, userLoading, user]);
 
   return (
     <div className="flex flex-col lg:flex-row gap-8 py-8 my-10">
