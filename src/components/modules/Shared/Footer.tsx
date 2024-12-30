@@ -14,17 +14,17 @@ const Footer = () => {
   ];
 
   const customerServices = [
-    { href: "/help", label: "Help Center" },
-    { href: "/returns", label: "Returns" },
-    { href: "/shipping", label: "Shipping Info" },
-    { href: "/faq", label: "FAQs" },
+    { href: "/terms-and-conditions", label: "General Terms" },
+    { href: "/terms-and-conditions", label: "Privacy and Data" },
+    { href: "/terms-and-conditions", label: "Usage Rules" },
+    { href: "/terms-and-conditions", label: "Your Rights" },
   ];
 
   const aboutLinks = [
     { href: "/about", label: "About Us" },
-    { href: "/careers", label: "Careers" },
-    { href: "/press", label: "Press" },
-    { href: "/contact", label: "Contact Us" },
+    { href: "/about", label: "Why Choose Us" },
+    { href: "/about", label: "Our Mission" },
+    { href: "/about", label: "Team" },
   ];
 
   const socialLinks = [
@@ -55,7 +55,7 @@ const Footer = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="bg-primary text-foreground mt-10 border-t border-muted-foreground"
+      className="bg-primary text-foreground mt-10 text-white"
     >
       <div className="container mx-auto px-4 py-10 grid gap-8 grid-cols-1 md:grid-cols-4">
         {/* Shop by Category */}
@@ -67,9 +67,7 @@ const Footer = () => {
                 key={index}
                 className="text-sm hover:text-muted-foreground transition"
               >
-                <Link href={`/products?category=${category}`}>
-                  {category}
-                </Link>
+                <Link href={`/products?category=${category}`}>{category}</Link>
               </li>
             ))}
           </ul>
@@ -79,9 +77,9 @@ const Footer = () => {
         <div>
           <h3 className="text-lg font-semibold mb-4">Customer Service</h3>
           <ul className="space-y-2">
-            {customerServices.map((service) => (
+            {customerServices.map((service, index: number) => (
               <li
-                key={service.href}
+                key={index}
                 className="text-sm hover:text-muted-foreground transition"
               >
                 <Link href={service.href}>{service.label}</Link>
@@ -94,9 +92,9 @@ const Footer = () => {
         <div>
           <h3 className="text-lg font-semibold mb-4">About</h3>
           <ul className="space-y-2">
-            {aboutLinks.map((link) => (
+            {aboutLinks.map((link, index: number) => (
               <li
-                key={link.href}
+                key={index}
                 className="text-sm hover:text-muted-foreground transition"
               >
                 <Link href={link.href}>{link.label}</Link>

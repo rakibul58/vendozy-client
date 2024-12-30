@@ -9,7 +9,9 @@ export const createCategory = async (categoryData: FieldValues) => {
     const { data } = await axiosInstance.post("/categories", categoryData);
     return data;
   } catch (error: any) {
-    throw new Error(error.response?.data?.message || "Failed to create category");
+    throw new Error(
+      error.response?.data?.message || "Failed to create category"
+    );
   }
 };
 
@@ -18,7 +20,7 @@ export const getAllCategories = async (options?: {
   limit?: number;
   searchTerm?: string;
   sortBy?: string;
-  sortOrder?: 'asc' | 'desc';
+  sortOrder?: "asc" | "desc";
 }) => {
   try {
     const { data } = await axiosInstance.get("/categories", {
@@ -27,13 +29,15 @@ export const getAllCategories = async (options?: {
         limit: options?.limit || 5,
         searchTerm: options?.searchTerm,
         sortBy: options?.sortBy,
-        sortOrder: options?.sortOrder
-      }
+        sortOrder: options?.sortOrder,
+      },
     });
     // console.log(data);
     return data;
   } catch (error: any) {
-    throw new Error(error.response?.data?.message || "Failed to fetch categories");
+    throw new Error(
+      error.response?.data?.message || "Failed to fetch categories"
+    );
   }
 };
 
@@ -42,7 +46,20 @@ export const getCategoryById = async (id: string) => {
     const { data } = await axiosInstance.get(`/categories/${id}`);
     return data;
   } catch (error: any) {
-    throw new Error(error.response?.data?.message || "Failed to fetch category");
+    throw new Error(
+      error.response?.data?.message || "Failed to fetch category"
+    );
+  }
+};
+
+export const getCategoryWithProduct = async () => {
+  try {
+    const { data } = await axiosInstance.get(`/categories/categoryWithProduct`);
+    return data;
+  } catch (error: any) {
+    throw new Error(
+      error.response?.data?.message || "Failed to fetch category"
+    );
   }
 };
 
@@ -51,7 +68,9 @@ export const updateCategory = async (id: string, categoryData: FieldValues) => {
     const { data } = await axiosInstance.put(`/categories/${id}`, categoryData);
     return data;
   } catch (error: any) {
-    throw new Error(error.response?.data?.message || "Failed to update category");
+    throw new Error(
+      error.response?.data?.message || "Failed to update category"
+    );
   }
 };
 
@@ -60,6 +79,8 @@ export const deleteCategory = async (id: string) => {
     const { data } = await axiosInstance.delete(`/categories/${id}`);
     return data;
   } catch (error: any) {
-    throw new Error(error.response?.data?.message || "Failed to delete category");
+    throw new Error(
+      error.response?.data?.message || "Failed to delete category"
+    );
   }
 };

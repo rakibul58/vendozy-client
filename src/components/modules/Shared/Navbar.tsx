@@ -21,6 +21,7 @@ import { protectedRoutes } from "@/constants";
 import UserAvatarDropdown from "./UserAvatarDropdown";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCartStore } from "@/store/cart.store";
+import MegaMenu from "./MegaMenu";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,6 +50,10 @@ const Navbar = () => {
   const menuItems = [
     { href: "/", label: "Home" },
     { href: "/products", label: "Products" },
+    { href: "/shop", label: "Shops" },
+    { href: "/products?isFlashSale=true", label: "Flash Sale" },
+    { href: "/about", label: "About Us" },
+    { href: "/terms-and-conditions", label: "Terms & Conditions" },
   ];
 
   return (
@@ -63,14 +68,14 @@ const Navbar = () => {
         {/* Logo */}
         <Link
           href="/"
-          className="flex items-center gap-2 font-bold justify-center"
+          className="flex items-center gap-2 font-bold justify-center text-white"
         >
           <Store />
           <h1 className="font-serif italic text-lg">Vendozy</h1>
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex gap-6">
+        <nav className="hidden md:flex gap-6 items-center text-white">
           {menuItems.map((item) => (
             <Link
               key={item.href}
@@ -80,6 +85,7 @@ const Navbar = () => {
               {item.label}
             </Link>
           ))}
+          <MegaMenu />
         </nav>
 
         {/* Mobile Navigation Toggle */}
